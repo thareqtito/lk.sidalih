@@ -254,12 +254,15 @@ const LG={sts:["B: Belum kawin","S: Sudah kawin","P: Pernah kawin"],dis:["1: Dis
 const SIGN=[["1. Ketua","ASWIKA BUDHI ARFANDY"],["2. Anggota","AGUS SUSANTO"],["3. Anggota","ANANG MA'RUF"],["4. Anggota","EKO SETIAWAN"],["5. Anggota","IWIT WIDHI SANTOSO"]];
 const HD1=[["No.",0,0,0,1],["Kecamatan",1,1,0,1],["Desa/Kelurahan",2,2,0,1],["Nama",3,3,0,1],["Tempat Lahir",4,4,0,1],["Tanggal Lahir",5,5,0,1],["Status Perkawinan B/S/P",6,6,0,1],["Jenis Kelamin L/P",7,7,0,1],["Alamat KTP-el",8,10,0,0],["Jalan/Dukuh",8,8,1,1],["RT",9,9,1,1],["RW",10,10,1,1],["Disabilitas",11,11,0,1],["Status Kepemilikan KTP-el S/B",12,12,0,1],["Keterangan",13,13,0,1]];
 const HD2=[["No.",0,0,0,1],["No KK",1,1,0,1],["NIK",2,2,0,1],["Nama",3,3,0,1],["Tempat Lahir",4,4,0,1],["Tanggal Lahir",5,5,0,1],["Status Perkawinan B/S/P",6,6,0,1],["Jenis Kelamin L/P",7,7,0,1],["Alamat",8,10,0,0],["Jalan/Dukuh",8,8,1,1],["RT",9,9,1,1],["RW",10,10,1,1],["Disabilitas",11,11,0,1],["Status Kepemilikan KTP-el S/B",12,12,0,1],["Kecamatan",13,13,0,1],["Desa/Kelurahan",14,14,0,1],["Keterangan",15,15,0,1]];
-const D1={pw:[6,12,15,40,15,11,11,8,49,6,6,10,13,19],name:"A-Daftar Pemilih Berkelanjutan",model:"Model A-Daftar Pemilih \nBerkelanjutan-PDPB",T:[["D4:L6","DAFTAR PEMILIH\nPEMUTAKHIRAN DATA PEMILIH BERKELANJUTAN (PDPB)\n{TW}"]],B:"M4:N5",pr:8,hr:11,w:[7.5,14.2,17.5,54.3,19,12.2,12.2,9.3,26.2,6.5,7,9.8,15.7,28.8],ce:[0,5,6,7,9,10,11,12],hd:HD1,
+const D1={lg:[1.756,1.11,106.7,118.2],rh:{1:18,2:18,3:9.75,4:18,5:18,6:18,7:18,8:18,9:18,10:16.5},pw:[6,12,15,40,15,11,11,8,49,6,6,10,13,19],name:"A-Daftar Pemilih Berkelanjutan",model:"Model A-Daftar Pemilih \nBerkelanjutan-PDPB",T:[["D4:L6","DAFTAR PEMILIH\nPEMUTAKHIRAN DATA PEMILIH BERKELANJUTAN (PDPB)\n{TW}"]],B:"M4:N5",pr:8,hr:11,w:[7.5,14.2,17.5,54.3,19,12.2,12.2,9.3,26.2,6.5,7,9.8,15.7,28.8],ce:[0,5,6,7,9,10,11,12],hd:HD1,
  L:[[5,["Keterangan Status","Perkawinan (7):",...LG.sts]],[7,["Keterangan Disabilitas (12):",...LG.dis]],[10,["Kolom Keterangan (13):",...LG.ket]]]};
-const D2={pw:[6,16,16,34,16,10,11,9,30,6,6,11,13,13,16,12],name:"A-Daftar Perubahan Pemilih-PDPB",model:"Model A-Daftar Perubahan \nPemilih-PDPB",T:[["D2:M2","DAFTAR PERUBAHAN PEMILIH"],["D3:M3","PEMUTAKHIRAN DATA PEMILIH BERKELANJUTAN (PDPB)"],["D4:M4","{TW}"]],B:"N2:P3",pr:6,hr:9,w:[7,13.8,16.5,50.5,19.8,9.2,11.2,9.3,41.7,6.5,7,9.8,12.5,13.3,17.2,10.5],ce:[0,5,6,7,9,10,11,12,15],hd:HD2,
+const D2={lg:[1.735,0.1,109,106.7],rh:{1:19,2:18,3:18,4:18,5:18,6:18,7:18,8:16.5},pw:[6,16,16,34,16,10,11,9,30,6,6,11,13,13,16,12],name:"A-Daftar Perubahan Pemilih-PDPB",model:"Model A-Daftar Perubahan \nPemilih-PDPB",T:[["D2:M2","DAFTAR PERUBAHAN PEMILIH"],["D3:M3","PEMUTAKHIRAN DATA PEMILIH BERKELANJUTAN (PDPB)"],["D4:M4","{TW}"]],B:"N2:P3",pr:6,hr:9,w:[7,13.8,16.5,50.5,19.8,9.2,11.2,9.3,41.7,6.5,7,9.8,12.5,13.3,17.2,10.5],ce:[0,5,6,7,9,10,11,12,15],hd:HD2,
  L:[[2,["Keterangan Status","Perkawinan (7):",...LG.sts]],[3,["Keterangan Disabilitas (12):",...LG.dis]],[6,["Kolom Keterangan Status","Kepemilikan KTP-el (13):",...LG.ek]],[9,["Kolom Keterangan (14):",...LG.ket]]]};
 const rng=r=>{const[a,b]=r.split(":");return[a.charCodeAt(0)-65,+a.slice(1),b.charCodeAt(0)-65,+b.slice(1)]};
-const fnum=n=>n.toLocaleString("id-ID");
+const fnum=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,"."),COL=new Intl.Collator("id",{sensitivity:"base"}).compare;
+const logoSrc=()=>document.querySelector("header img.logo").src,logoBytes=()=>Uint8Array.from(atob(logoSrc().split(",")[1]),c=>c.charCodeAt(0));
+let LG_=null;async function logoPix(){if(LG_)return LG_;const im=new Image();im.src=logoSrc();await im.decode();const W=140,H=Math.round(W*im.naturalHeight/im.naturalWidth),c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.drawImage(im,0,0,W,H);
+ const d=x.getImageData(0,0,W,H).data,rgb=new Uint8Array(W*H*3),a=new Uint8Array(W*H);for(let i=0,j=0,k=0;i<d.length;i+=4){rgb[j++]=d[i];rgb[j++]=d[i+1];rgb[j++]=d[i+2];a[k++]=d[i+3]}return LG_={w:W,h:H,rgb,a}}
 /* ===== EXCEL (ExcelJS dimuat saat dibutuhkan) ===== */
 const BD={top:{style:"thin"},left:{style:"thin"},bottom:{style:"thin"},right:{style:"thin"}};
 async function xl(){if(typeof ExcelJS!="undefined")return;await new Promise((ok,er)=>{const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js";s.onload=ok;s.onerror=()=>er(new Error("Pustaka Excel gagal dimuat (periksa koneksi internet)"));document.head.appendChild(s)})}
@@ -268,23 +271,24 @@ const xbd=(ws,r,f)=>{const[c0,r0,c1,r1]=rng(r);for(let y=r0;y<=r1;y++)for(let x=
 const xm=(ws,r,v,o)=>{xs(ws,r.split(":")[0],v,o);ws.mergeCells(r);if(o&&o.bd)xbd(ws,r,()=>o.bd)};
 const xsetup=(ws,o)=>{ws.pageSetup={orientation:"landscape",paperSize:9,fitToPage:true,fitToWidth:1,fitToHeight:o.h,printTitlesRow:o.t,margins:{left:.4,right:.4,top:.5,bottom:.6,header:.3,footer:.3}};ws.headerFooter={oddFooter:"&CHalaman &P dari &N"}};
 async function xlTable(D,rows,sc,tot,pg){await xl();const wb=new ExcelJS.Workbook(),ws=wb.addWorksheet(D.name,{views:[{showGridLines:false}]}),hr=D.hr;
- ws.columns=D.w.map((w,i)=>({width:w,style:{font:{name:"Arial",size:10},alignment:{horizontal:D.ce.includes(i)?"center":"left",vertical:"middle"},border:BD}}));
+ ws.columns=D.w.map(width=>({width}));Object.entries(D.rh).forEach(([r,h])=>ws.getRow(+r).height=h);ws.addImage(wb.addImage({buffer:logoBytes(),extension:"png"}),{tl:{col:D.lg[0],row:D.lg[1]},ext:{width:D.lg[2],height:D.lg[3]}});
+ const ST=D.w.map((_,i)=>({font:{name:"Arial",size:10},alignment:{horizontal:D.ce.includes(i)?"center":"left",vertical:"middle"},border:BD}));
  D.T.forEach(([r,t])=>xm(ws,r,t.replace("{TW}",TWT()),{f:"Tahoma",s:14,b:1,h:"center",w:1}));
  xm(ws,D.B,D.model,{s:12,h:"center",w:1,bd:BD});
  const kv=(r,a,b)=>{xs(ws,"B"+r,a,{b:1});xs(ws,"C"+r,": "+b,{b:1,h:"left"})};kv(D.pr,"PROVINSI","JAWA TIMUR");kv(D.pr+1,"KABUPATEN","PACITAN");if(sc)kv(D.pr+2,"KECAMATAN",sc);
  ws.getRow(hr).height=30;ws.getRow(hr+1).height=24;
  D.hd.forEach(([t,c0,c1,r0,r1])=>{const a=ABJ(c0)+(hr+r0);xs(ws,a,t,{b:1,h:"center",w:1,bd:{...BD,top:{style:r0?"thin":"double"}}});if(c0!=c1||r0!=r1){const m=a+":"+ABJ(c1)+(hr+r1);ws.mergeCells(m);xbd(ws,m,y=>({...BD,top:{style:y==hr?"double":"thin"}}))}});
  D.w.forEach((_,i)=>xs(ws,ABJ(i)+(hr+2),i+1,{s:9,h:"center",bd:BD}));
- for(let i=0;i<rows.length;i++){ws.addRow(rows[i]);if(i%3000==2999){pg&&pg(i+1);await tick()}}
+ for(let i=0;i<rows.length;i++){const rw=ws.addRow(rows[i]);for(let c=0;c<D.w.length;c++)rw.getCell(c+1).style=ST[c];if(i%3000==2999){pg&&pg(i+1);await tick()}}
  const r0=hr+3+rows.length+1;D.L.forEach(([c,ls])=>ls.forEach((t,j)=>xs(ws,ABJ(c)+(r0+j),t,{h:"left"})));
  if(tot)[["Jumlah\nPemilih (L+P)",tot[0]],["Pemilih \nLaki-laki",tot[1]],["Pemilih \nPerempuan",tot[2]]].forEach(([l,v],i)=>{const r=r0+2+i*2;xm(ws,`C${r}:C${r+1}`,l,{w:1,bd:BD});xm(ws,`D${r}:D${r+1}`,": "+fnum(v),{h:"left",bd:BD})});
  xsetup(ws,{h:0,t:`${hr}:${hr+2}`});pg&&pg(rows.length);return wb.xlsx.writeBuffer()}
 async function xlRekap(kind){await xl();const R=calc(key()),T=tot(R),J=(n,f)=>R[n][f].L+R[n][f].P,ds=KEC.reduce((a,n)=>a+DESA[n],0);
  const wb=new ExcelJS.Workbook(),ws=wb.addWorksheet(kind==3?"Model A-Rekap Perubahan Kabko-P":"Model A-Rekap Kabko-PDPB",{views:[{showGridLines:false}]});
- const c=(a,v,o)=>xs(ws,a,v,{h:"center",bd:BD,n:"#,##0",...o}),kv=(r,a,b)=>{xs(ws,"B"+r,a,{b:1});xs(ws,"C"+r,": "+b,{b:1,h:"left"})};
+ const c=(a,v,o)=>xs(ws,a,typeof v=="number"&&v>=1000?fnum(v):v,{h:"center",bd:BD,...o}),kv=(r,a,b)=>{xs(ws,"B"+r,a,{b:1});xs(ws,"C"+r,": "+b,{b:1,h:"left"})};
  const sign=(r0,lc,hdr)=>{SIGN.forEach(([l,n],i)=>{const r=r0+i;xs(ws,lc+r,l,{bd:BD});xm(ws,`${ABJ(lc.charCodeAt(0)-64)}${r}:${ABJ(lc.charCodeAt(0)-64)}${r}`.replace(/:.*/,""),": "+n,{bd:BD})})};
  const K=kind==3;ws.columns=(K?[8.7,19.8,16,27.5,21.7,18.3,26.7]:[6.5,22.5,13.5,22.7,20.5,16,27.7]).map(width=>({width}));
- const tl=K?3:3;xm(ws,"B3:F3",K?"REKAPITULASI PERUBAHAN PEMILIH":"REKAPITULASI",{f:"Tahoma",s:12,b:1,h:"center"});
+ ws.addImage(wb.addImage({buffer:logoBytes(),extension:"png"}),K?{tl:{col:.35,row:1},ext:{width:76,height:84}}:{tl:{col:.5,row:1.28},ext:{width:94,height:104}});for(let q=1;q<=(K?9:13);q++)ws.getRow(q).height=15.75;xm(ws,"B3:F3",K?"REKAPITULASI PERUBAHAN PEMILIH":"REKAPITULASI",{f:"Tahoma",s:12,b:1,h:"center"});
  xm(ws,"G3:G4",K?"Model A-Rekap Perubahan Kabko-PDPB":"Model A-Rekap Kabko-PDPB",{s:11,h:"center",w:1,bd:BD});
  xm(ws,"B4:F4","PEMUTAKHIRAN DATA PEMILIH BERKELANJUTAN (PDPB)",{f:"Tahoma",s:11,b:1,h:"center"});
  let r,tr;
@@ -293,8 +297,8 @@ async function xlRekap(kind){await xl();const R=calc(key()),T=tot(R),J=(n,f)=>R[
   KEC.forEach((n,i)=>{r=11+i;c("A"+r,i+1);c("B"+r,n.toUpperCase(),{h:"left"});c("C"+r,DESA[n]);c("D"+r,J(n,"baru"));c("E"+r,J(n,"tms"));c("F"+r,J(n,"ubah"));c("G"+r,"")});
   xm(ws,"A23:B23","TOTAL",{b:1,h:"center",bd:BD});c("C23",ds,{b:1});c("D23",T.baru.L+T.baru.P,{b:1});c("E23",T.tms.L+T.tms.P,{b:1});c("F23",T.ubah.L+T.ubah.P,{b:1});c("G23","");
   xm(ws,"B25:G25","Disahkan dalam rapat pleno KPU Kabupaten Pacitan di Pacitan Tanggal …",{h:"center"});
-  xm(ws,"C27:D27","Nama",{h:"center",b:1,bd:BD});c("E27","Tanda Tangan",{b:1});
-  SIGN.forEach(([l,n],i)=>{r=28+i;xs(ws,"B"+r,l,{bd:BD});xm(ws,`C${r}:D${r}`,": "+n,{bd:BD});c("E"+r,"…....................")});
+  xm(ws,"C27:D27","Nama",{h:"center",b:1});c("E27","Tanda Tangan",{b:1,bd:null});
+  SIGN.forEach(([l,n],i)=>{r=28+i;xs(ws,"B"+r,l);xm(ws,`C${r}:D${r}`,": "+n);c("E"+r,"…....................",{bd:null})});
   xs(ws,"A34","Catatan:",{h:"left",f:"Bookman Old Style",s:9});xs(ws,"A35","*) Disesuaikan dengan Jumlah Pemilih",{h:"left",f:"Bookman Old Style",s:9})}
  else{xm(ws,"B5:F5","OLEH KPU KABUPATEN PACITAN",{f:"Tahoma",s:11,b:1,h:"center"});xm(ws,"B6:F6",TWT(),{f:"Tahoma",s:11,b:1,h:"center"});kv(9,"PROVINSI","JAWA TIMUR");kv(10,"KABUPATEN","PACITAN");
   [["No.","A12:A13"],["Nama Kecamatan","B12:B13"],["Jumlah Desa/Kel","C12:C13"],["Jumlah Pemilih","D12:F12"],["Keterangan","G12:G13"]].forEach(([t,m])=>{c(m.split(":")[0],t,{b:1,w:1,n:undefined});ws.mergeCells(m)});
@@ -302,8 +306,8 @@ async function xlRekap(kind){await xl();const R=calc(key()),T=tot(R),J=(n,f)=>R[
   KEC.forEach((n,i)=>{r=14+i;c("A"+r,i+1);c("B"+r,n.toUpperCase(),{h:"left"});c("C"+r,DESA[n]);c("D"+r,R[n].hasil.L);c("E"+r,R[n].hasil.P);c("F"+r,R[n].hasil.L+R[n].hasil.P);c("G"+r,"")});
   xm(ws,"A26:B26","TOTAL",{b:1,h:"center",bd:BD});c("C26",ds,{b:1});c("D26",T.hasil.L,{b:1});c("E26",T.hasil.P,{b:1});c("F26",T.hasil.L+T.hasil.P,{b:1});c("G26","");
   xm(ws,"C28:F28","Disahkan dalam Rapat Pleno KPU Kabupaten Pacitan di Pacitan Tanggal ….",{h:"center"});xm(ws,"C29:F29","KPU KABUPATEN PACITAN",{b:1,h:"center"});
-  c("D30","Nama",{b:1});c("E30","Tanda Tangan",{b:1});
-  SIGN.forEach(([l,n],i)=>{r=31+i;xs(ws,"C"+r,l,{bd:BD});xs(ws,"D"+r,": "+n,{bd:BD});c("E"+r,"…………………………..")});
+  c("D30","Nama",{b:1,bd:null});c("E30","Tanda Tangan",{b:1,bd:null});
+  SIGN.forEach(([l,n],i)=>{r=31+i;xs(ws,"C"+r,l);xs(ws,"D"+r,": "+n);c("E"+r,"…………………………..",{bd:null})});
   xs(ws,"A36","Catatan :",{h:"left"});xs(ws,"A37","*) Ditulis dengan Jumlah Kecamatan",{h:"left"})}
  xsetup(ws,{h:1});return wb.xlsx.writeBuffer()}
 /* ===== PDF (penulis PDF sederhana, hemat memori, tanpa pustaka) ===== */
@@ -312,62 +316,64 @@ const san=t=>{t=String(t==null?"":t);if(/[^\x20-\x7e]/.test(t))t=t.normalize("NF
 const wd=t=>{let w=0;for(let i=0;i<t.length;i++)w+=HW[t.charCodeAt(i)-32]||556;return w};
 const pe=t=>t.replace(/[\\()]/g,"\\$&"),f2=n=>String(Math.round(n*100)/100);
 async function pdfTable(D,rows,sc,tot,pg){
+ const LP=await logoPix().catch(()=>null);
  const PW=842,PH=595,M=28,W=D.pw||D.w,k=(PW-2*M)/W.reduce((a,b)=>a+b),X=[M],NC=W.length,RH=10.5,FS=7,HH=17,pages=[];W.forEach(w=>X.push(X[X.length-1]+w*k));
- let P,y,ty0;
+ let P,y,ty0,yv;
  const Y=v=>f2(PH-v),ln=(a,b,c,d)=>`${f2(a)} ${Y(b)} m ${f2(c)} ${Y(d)} l S\n`;
  const T=(t,x,yy,fs,b,w)=>{t=san(t);const wt=wd(t)*fs/1000*(b?1.07:1);if(w!=null)x+=(w-wt)/2;return`BT /F${b?2:1} ${fs} Tf 1 0 0 1 ${f2(x)} ${Y(yy+fs*.8)} Tm (${pe(t)}) Tj ET\n`};
  const wrap=(t,w,fs)=>{const o=[];let c="";t.split(" ").forEach(s=>{const n=c?c+" "+s:s;if(c&&wd(n)*fs/1000*1.07>w){o.push(c);c=s}else c=n});o.push(c);return o};
- const close=()=>{if(ty0!=null){let s="0.3 w\n";for(let i=0;i<=NC;i++)s+=ln(X[i],ty0,X[i],y);P.push(s)}P.push(T("Halaman "+pages.length+" dari {N}",0,PH-18,7,0,PW))};
+ const close=()=>{if(ty0!=null){let s="0.3 w\n";for(let i=0;i<=NC;i++)s+=ln(X[i],ty0,X[i],yv);P.push(s)}P.push(T("Halaman "+pages.length+" dari {N}",0,PH-22,7,0,PW))};
  const begin=(first,bare)=>{P=[];pages.push(P);y=M;ty0=null;
-  if(first){const ls=D.T.flatMap(([r,t])=>t.replace("{TW}",TWT()).split("\n")),[c0,,c1]=rng(D.T[0][0]),cx=(X[c0]+X[c1+1])/2;
+  if(first){if(LP)P.push(`q 41.5 0 0 46 ${f2(X[1]+22)} ${Y(M+46)} cm /Im1 Do Q\n`);const ls=D.T.flatMap(([r,t])=>t.replace("{TW}",TWT()).split("\n")),[c0,,c1]=rng(D.T[0][0]),cx=(X[c0]+X[c1+1])/2;
    ls.forEach((t,i)=>{P.push(T(t,cx,y,i?10:13,1,0).replace(/1 0 0 1 [\d.]+/,m=>"1 0 0 1 "+f2(cx-wd(san(t))*(i?10:13)/2000*1.07)));y+=i?13:17});
    const[b0,,b1]=rng(D.B);P.push(`0.5 w ${f2(X[b0])} ${Y(M+32)} ${f2(X[b1+1]-X[b0])} 32 re S\n`);D.model.split("\n").forEach((t,i)=>P.push(T(t.trim(),X[b0],M+5+i*11,8,0,X[b1+1]-X[b0])));
    y+=6;const kv=(a,b)=>{P.push(T(a,X[1]+2,y,8,1));P.push(T(": "+b,X[1]+62,y,8,1));y+=12};kv("PROVINSI","JAWA TIMUR");kv("KABUPATEN","PACITAN");if(sc)kv("KECAMATAN",sc);y+=6}
   if(!bare){let s="0.5 w\n";D.hd.forEach(([t,c0,c1,r0,r1])=>{const x0=X[c0],w=X[c1+1]-x0,ya=y+r0*HH,h=(r1-r0+1)*HH;s+=`${f2(x0)} ${Y(ya+h)} ${f2(w)} ${h} re S\n`;const L=wrap(san(t),w-4,6.5),y1=ya+(h-L.length*8)/2;L.forEach((l,i)=>s+=T(l,x0,y1+i*8,6.5,1,w))});
-   W.forEach((_,i)=>s+=`${f2(X[i])} ${Y(y+2*HH+10)} ${f2(X[i+1]-X[i])} 10 re S\n`+T(String(i+1),X[i],y+2*HH+1.5,6.5,0,X[i+1]-X[i]));P.push(s);y+=2*HH+10;ty0=y}};
+   W.forEach((_,i)=>s+=`${f2(X[i])} ${Y(y+2*HH+10)} ${f2(X[i+1]-X[i])} 10 re S\n`+T(String(i+1),X[i],y+2*HH+1.5,6.5,0,X[i+1]-X[i]));P.push(s);y+=2*HH+10;ty0=y;yv=y}};
  begin(true);
- for(let i=0;i<rows.length;i++){if(y+RH>PH-34){close();begin(false)}
+ for(let i=0;i<rows.length;i++){if(y+RH>PH-46){close();begin(false)}
   const r=rows[i];let s="BT /F1 7 Tf\n",tz=100;
   for(let c=0;c<NC;c++){let t=san(r[c]);if(t==="")continue;const w=X[c+1]-X[c]-3;let tw=wd(t)*FS/1000,z=1;if(tw>w){z=w/tw;if(z<.5){z=.5;while(t.length>1&&wd(t)*FS/2000>w)t=t.slice(0,-1)}tw=wd(t)*FS/1000}
    const x=D.ce.includes(c)?X[c]+(w+3-tw*z)/2:X[c]+1.5,zz=Math.round(z*100);s+=`1 0 0 1 ${f2(x)} ${Y(y+RH-2.8)} Tm `+(zz!=tz?zz+" Tz ":"")+`(${pe(t)}) Tj\n`;tz=zz}
-  y+=RH;P.push(s+"ET\n0.3 w "+ln(X[0],y,X[NC],y));if(i%4000==3999){pg&&pg(i+1);await tick()}}
+  y+=RH;yv=y;P.push(s+"ET\n0.3 w "+ln(X[0],y,X[NC],y));if(i%4000==3999){pg&&pg(i+1);await tick()}}
  const bl=[...(tot?[["Jumlah Pemilih (L+P) : "+fnum(tot[0]),"Pemilih Laki-laki : "+fnum(tot[1]),"Pemilih Perempuan : "+fnum(tot[2])]]:[]),...D.L.map(a=>a[1])],hh=Math.max(...bl.map(b=>b.length))*9+8;
- if(y+hh+6>PH-30){close();begin(false,true)}
- y+=8;let x=X[1];bl.forEach(b=>{b.forEach((t,i)=>P.push(T(t,x,y+i*9,7,0)));x+=Math.max(...b.map(t=>wd(san(t))))*7/1000+26});
+ if(y+hh+16>PH-40){close();begin(false,true)}
+ y+=16;let x=X[1];bl.forEach(b=>{b.forEach((t,i)=>P.push(T(t,x,y+i*9,7,0)));x+=Math.max(...b.map(t=>wd(san(t))))*7/1000+26});
  close();pg&&pg(rows.length);
  const N=pages.length,parts=[],off=[];let pos=0;const add=s=>{parts.push(s);pos+=s.length},obj=(n,b)=>{off[n]=pos;add(`${n} 0 obj\n${b}\nendobj\n`)};
- add("%PDF-1.4\n");obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,`<< /Type /Pages /Count ${N} /Kids [${pages.map((_,i)=>`${5+2*i} 0 R`).join(" ")}] >>`);obj(3,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");obj(4,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
- const zip=typeof CompressionStream!="undefined";
- for(let i=0;i<N;i++){obj(5+2*i,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6+2*i} 0 R >>`);
-  const c=pages[i].join("").replace("{N}",N);off[6+2*i]=pos;
-  if(zip){const b=new Uint8Array(await new Response(new Blob([c]).stream().pipeThrough(new CompressionStream("deflate"))).arrayBuffer());add(`${6+2*i} 0 obj\n<< /Length ${b.length} /Filter /FlateDecode >>\nstream\n`);parts.push(b);pos+=b.length;add("\nendstream\nendobj\n")}
-  else add(`${6+2*i} 0 obj\n<< /Length ${c.length} >>\nstream\n${c}\nendstream\nendobj\n`);pages[i]=null;if(i%100==99)await tick()}
- const tn=5+2*N,xp=pos;add(`xref\n0 ${tn}\n0000000000 65535 f \n`+off.slice(1).map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${tn} /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`);
+ const zip=typeof CompressionStream!="undefined",cb=async u=>zip?new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new CompressionStream("deflate"))).arrayBuffer()):u;add("%PDF-1.4\n");obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,`<< /Type /Pages /Count ${N} /Kids [${pages.map((_,i)=>`${7+2*i} 0 R`).join(" ")}] >>`);obj(3,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");obj(4,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+ const so=async(n,d,u)=>{const z=await cb(u);off[n]=pos;add(`${n} 0 obj\n<< ${d} /Length ${z.length}${zip?" /Filter /FlateDecode":""} >>\nstream\n`);parts.push(z);pos+=z.length;add("\nendstream\nendobj\n")};
+ if(LP){await so(5,`/Type /XObject /Subtype /Image /Width ${LP.w} /Height ${LP.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /SMask 6 0 R`,LP.rgb);await so(6,`/Type /XObject /Subtype /Image /Width ${LP.w} /Height ${LP.h} /ColorSpace /DeviceGray /BitsPerComponent 8`,LP.a)}else{obj(5,"null");obj(6,"null")}
+ for(let i=0;i<N;i++){obj(7+2*i,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> /XObject << /Im1 5 0 R >> >> /Contents ${8+2*i} 0 R >>`);
+  const c=pages[i].join("").replace("{N}",N);off[8+2*i]=pos;
+  if(zip){const b=new Uint8Array(await new Response(new Blob([c]).stream().pipeThrough(new CompressionStream("deflate"))).arrayBuffer());add(`${8+2*i} 0 obj\n<< /Length ${b.length} /Filter /FlateDecode >>\nstream\n`);parts.push(b);pos+=b.length;add("\nendstream\nendobj\n")}
+  else add(`${8+2*i} 0 obj\n<< /Length ${c.length} >>\nstream\n${c}\nendstream\nendobj\n`);pages[i]=null;if(i%100==99)await tick()}
+ const tn=7+2*N,xp=pos;add(`xref\n0 ${tn}\n0000000000 65535 f \n`+off.slice(1).map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${tn} /Root 1 0 R >>\nstartxref\n${xp}\n%%EOF`);
  return new Blob(parts,{type:"application/pdf"})}
 
 /* ===== MENU EXPORT DATA ===== */
 function vExp(){const n2=Q().rows.filter(r=>r.some(v=>v!=="")).length,np=PM?KEC.reduce((a,n)=>a+PM[n].length,0):0,bx=(x,l)=>`<button class="p" data-x="${x}">${l}</button>`;
  const card=(ic,t,d,btns,extra="")=>`<div class="xc"><div class="xi">${ic}</div><div class="xb"><b>${t}</b><div class="m">${d}</div>${extra}<div class="bar">${btns}</div></div></div>`;
  $("#mn").innerHTML=`<div class="bar m">Dokumen dibuat untuk <b>${TWT()}</b> (mengikuti pilihan Tahun dan Triwulan di atas). <span id="exs"></span></div><div class="xg">`+
- card("📋","A-Daftar Pemilih Berkelanjutan","Sumber: file Impor Data Pemilih. NKK/NIK tidak dicantumkan dan tanggal lahir disensor. Dibuat per kecamatan karena datanya sangat besar.",
+ card("📋","A-Daftar Pemilih Berkelanjutan","Sumber: file Impor Data Pemilih. NKK/NIK tidak dicantumkan dan tanggal lahir disensor. Diurutkan nama A-Z. Dibuat per kecamatan karena datanya sangat besar.",
   `<select id="ksc"><option value="ALL">Semua kecamatan (satu file per kecamatan)</option>${KEC.map(n=>`<option value="${n}">${n.toUpperCase()}</option>`).join("")}</select>`+bx("pb-x","⬇ Excel")+bx("pb-p","⬇ PDF")+`<button id="imp">📥 Impor Data Pemilih</button>`,
   `<div id="ims" class="ss ${np?"ok":"er"}" style="margin-top:8px;display:inline-block">${np?"✓ "+fnum(np)+" baris data impor siap diekspor":"⚠ Belum ada data impor di memori. Impor file data pemilih (CSV/Excel) dulu; perlu diulang setiap halaman dibuka ulang."}</div>`)+
- card("🔄","A-Daftar Perubahan Pemilih-PDPB",`Sumber: menu Perubahan Data Pemilih (${fnum(n2)} baris). NKK dan NIK hanya 6 digit awal, sisanya *.`,bx("pp-x","⬇ Excel")+bx("pp-p","⬇ PDF"))+
- card("📊","Model A-Rekap Perubahan Kabko-P","Pemilih Baru, TMS, dan Perubahan Data per kecamatan (dari Rekapitulasi PDPB).",bx("rp-x","⬇ Excel"))+
+ card("🔄","A-Daftar Perubahan Pemilih-PDPB",`Sumber: menu Perubahan Data Pemilih (${fnum(n2)} baris). Diurutkan nama A-Z. NKK dan NIK hanya 6 digit awal, sisanya *.`,bx("pp-x","⬇ Excel")+bx("pp-p","⬇ PDF"))+
+ card("📊","Model A-Rekap Perubahan Kabko-PDPB","Pemilih Baru, TMS, dan Perubahan Data per kecamatan (dari Rekapitulasi PDPB).",bx("rp-x","⬇ Excel"))+
  card("🗂️","Model A-Rekap Kabko-PDPB","Jumlah pemilih L, P, dan L+P per kecamatan (dari Hasil Triwulan).",bx("rk-x","⬇ Excel"))+"</div>"}
 async function runExp(c){const st=m=>{const e=$("#exs");if(e)e.textContent=m},XT="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",sf=`${S.y}_TW-${S.t}`;
  const dl=(d,name,t)=>{const b=d instanceof Blob?d:new Blob([d],{type:t}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),120000);log("Ekspor",name)};
  try{const[k,f]=c.split("-");
   if(k=="pb"){if(!PM)return alert("Impor dulu file Data Pemilih dengan tombol 📥 Impor Data Pemilih.");const sel=$("#ksc").value,R=calc(key()),L=sel=="ALL"?KEC.filter(n=>PM[n].length):KEC.filter(n=>n==sel&&PM[n].length);
    if(!L.length)return alert("Tidak ada data untuk pilihan tersebut.");
-   for(const n of L){const U=n.toUpperCase(),rows=PM[n].map((r,i)=>[i+1,U,r[0],r[1],r[2],TGL,r[3],r[4],r[5],p3(r[6]),p3(r[7]),r[8],r[9],""]),h=R[n].hasil,tt=[h.L+h.P,h.L,h.P],pg=i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(rows.length)} baris…`),nm=`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}`;
+   for(const n of L){const U=n.toUpperCase(),rows=PM[n].slice().sort((a,b)=>COL(a[1],b[1])).map((r,i)=>[i+1,U,r[0],r[1],r[2],TGL,r[3],r[4],r[5],p3(r[6]),p3(r[7]),r[8],r[9],""]),h=R[n].hasil,tt=[h.L+h.P,h.L,h.P],pg=i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(rows.length)} baris…`),nm=`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}`;
     st(`⏳ Menyusun ${U}…`);await tick();
     if(f=="x")dl(await xlTable(D1,rows,U,tt,pg),nm+".xlsx",XT);else dl(await pdfTable(D1,rows,U,tt,pg),nm+".pdf");
     if(L.length>1)await new Promise(r=>setTimeout(r,900))}}
-  else if(k=="pp"){const rows=Q().rows.filter(r=>r.some(v=>v!=="")).map((r,i)=>[i+1,mask(r[1]),mask(r[2]),r[3],r[4],TGL,r[6],r[7],r[8],p3(r[9]),p3(r[10]),r[11],r[12],r[17],r[16],r[13]]);
+  else if(k=="pp"){const rows=Q().rows.filter(r=>r.some(v=>v!=="")).sort((a,b)=>COL(a[3],b[3])).map((r,i)=>[i+1,mask(r[1]),mask(r[2]),r[3],r[4],TGL,r[6],r[7],r[8],p3(r[9]),p3(r[10]),r[11],r[12],r[17],r[16],r[13]]);
    if(!rows.length)return alert("Belum ada data di menu Perubahan Data Pemilih.");const pg=i=>st(`⏳ ${fnum(i)} dari ${fnum(rows.length)} baris…`),nm=`A-Daftar_Perubahan_Pemilih-PDPB_${sf}`;st("⏳ Menyusun dokumen…");await tick();
    if(f=="x")dl(await xlTable(D2,rows,null,null,pg),nm+".xlsx",XT);else dl(await pdfTable(D2,rows,null,null,pg),nm+".pdf")}
-  else dl(await xlRekap(k=="rp"?3:4),(k=="rp"?"Model_A-Rekap_Perubahan_Kabko-P_":"Model_A-Rekap_Kabko-PDPB_")+sf+".xlsx",XT);
+  else dl(await xlRekap(k=="rp"?3:4),(k=="rp"?"Model_A-Rekap_Perubahan_Kabko-PDPB_":"Model_A-Rekap_Kabko-PDPB_")+sf+".xlsx",XT);
   st("✅ Selesai. Periksa folder Unduhan.")}catch(x){st("❌ "+(x.message||x))}}
 /* ---------- LOGIN OPERATOR ---------- */
 let idleT;const resetIdle=()=>{clearTimeout(idleT);idleT=setTimeout(()=>{if(SESS){api({a:"out"}).catch(()=>{});forceLogout("Otomatis keluar karena tidak aktif 30 menit.")}},1800000)};
