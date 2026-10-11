@@ -178,7 +178,7 @@ const PAL=["#16a34a","#2563eb","#d97706","#db2777","#0d9488","#7c3aed","#dc2626"
 const TMSN=[["1","Meninggal","🕊️","#64748b"],["2","Ganda","👥","#d97706"],["3","Di Bawah Umur","🧒","#0d9488"],["4","Pindah Domisili","🚚","#2563eb"],["5","WNA","🌏","#7c3aed"],["6","TNI","🪖","#16a34a"],["7","POLRI","👮","#0ea5e9"],["8","Hak Politik Dicabut","⚖️","#dc2626"]];
 const srt=m=>[...m.entries()].sort((a,b)=>b[1]-a[1]);
 function an(){const A={baru:new Map(),tms:{},ubah:new Map()},inc=(m,k)=>m.set(k,(m.get(k)||0)+1);TMSN.forEach(t=>A.tms[t[0]]=new Map());
- (Q().rows||[]).forEach(r=>{if(!mk(r[17]))return;const g=up(r[7]);if(g!="L"&&g!="P")return;const ket=up(r[13]),sm=String(r[14]||"").trim().toUpperCase()||"(TANPA SUMBER)";
+ (Q().rows||[]).forEach(r=>{if(!mk(r[17]))return;const g=up(r[7]);if(g!="L"&&g!="P")return;const ket=up(r[13]),sm=String(r[19]||"").trim().toUpperCase()||"(TANPA SUMBER)";
   if(ket=="B")inc(A.baru,sm);else if(/^[1-8]$/.test(ket))inc(A.tms[ket],sm);else if(ket=="U"){const kk=String(r[18]||"").trim().toUpperCase()||"(TANPA KETERANGAN)";let o=A.ubah.get(kk);if(!o)A.ubah.set(kk,o={n:0,s:new Map()});o.n++;inc(o.s,sm)}});return A}
 const nt=(k,df,ph)=>{const v=(Q().note||{})[k]||"";return `<span class="nt${v||df?"":" em"}" data-nk="${k}" data-df="${esc(df||ph)}" data-em="${v||df?"":1}" title="Klik 2x untuk mengubah">${esc(v||df||ph)}</span>`};
 const PHN="Klik 2x untuk menambah keterangan",chips=m=>srt(m).map(([k,v])=>`<span class="chip">${esc(k)} <b>${fm(v)}</b></span>`).join("");
