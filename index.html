@@ -156,6 +156,10 @@ function vData(){const q=Q(),n=q.rows.length,D=dups(q.rows),L=S.dup&&D.g?D.list:
 /* ---------- MENU 2 ---------- */
 const GC={prev:0,baru:1,tms:2,ubah:3,krg:3,tbh:3,tang:4,hasil:5,sel:6,sid:7,es:8,eb:8,dis:9};
 const gc=f=>"g"+(/^t\d$/.test(f)?2:/^d\d$/.test(f)?9:GC[f]);
+const pvTxt=()=>{const q=Q();if(!cfg().url||!SESS)return"⚠ Belum tersambung ke Spreadsheet.";if(PVE)return"❌ "+PVE;return q.pvm&&q.pvm.length?"⚠ Kecamatan tidak ditemukan di sheet: "+q.pvm.join(", ")+".":q.pvm?"✅ Data terambil dari Spreadsheet.":"⏳ Mengambil data…"};
+let PVE="";
+async function loadPrev(k){try{const d=await api({a:"prev",q:k});if(!d.ok)throw new Error(d.err);const q=Q(k),old=JSON.stringify(q.prev||{}),p={};KEC.forEach(n=>{const x=d.prev[n.toUpperCase()];if(x)p[n]={L:x.L,P:x.P}});
+ const f0=q.pvm===undefined||!!PVE;q.prev=p;q.pvm=KEC.filter(n=>!p[n]).map(n=>n.toUpperCase());PVE="";save();if((f0||old!==JSON.stringify(p))&&k==key()&&!(document.activeElement&&document.activeElement.tagName=="INPUT"))render()}catch(x){const w=PVE!==String(x.message||x);PVE=String(x.message||x);if(w&&k==key()&&S.tab=="rekap")render()}}
 function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp;
  let h1='<tr><th rowspan=2>No</th><th rowspan=2>Kecamatan</th><th rowspan=2>Jml Kel/Desa</th>',h2='<tr class="h2">';
  G.forEach(([l,f])=>{const c=gc(f);h1+=`<th colspan=3 class="${c} gl">${l}</th>`;h2+=`<th class="${c} gl">L</th><th class="${c}">P</th><th class="${c}">JML</th>`});
@@ -163,14 +167,14 @@ function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp;
  KEC.forEach((n,i)=>{const d=DESA[n];td+=d;
   b+=`<tr><td>${i+1}</td><td><b>${n.toUpperCase()}</b></td><td class="c">${d}</td>`;
   G.forEach(([l,f])=>{const v=R[n][f],c=gc(f);
-   if(MAN.includes(f)&&(f!="prev"||first))b+=["L","P"].map(g=>`<td class="${c}${g=="L"?" gl":""}"><input data-f="${f}" data-k="${n}" data-g="${g}" value="${v[g]}"></td>`).join("");
+   if(MAN.includes(f)&&f!="prev")b+=["L","P"].map(g=>`<td class="${c}${g=="L"?" gl":""}"><input data-f="${f}" data-k="${n}" data-g="${g}" value="${v[g]}"></td>`).join("");
    else b+=`<td class="n ${c} gl">${fm(v.L)}</td><td class="n ${c}">${fm(v.P)}</td>`;
    b+=`<td class="n ${c} jm"><b>${fm(v.L+v.P)}</b></td>`});b+="</tr>"});
  b+=`<tr class="tot"><td colspan=2>JUMLAH</td><td class="c">${td}</td>`;
  G.forEach(([l,f])=>{const c=gc(f);b+=`<td class="n ${c} gl">${fm(T[f].L)}</td><td class="n ${c}">${fm(T[f].P)}</td><td class="n ${c} jm">${fm(T[f].L+T[f].P)}</td>`});
  const st=im?`✅ Data impor: <b>${im.file}</b> · ${fm(im.rows)} baris · ${im.at}${im.skip?` · ${fm(im.skip)} baris dilewati (kecamatan/kelamin tidak dikenali)`:""}`:"⚠ Belum ada data impor. Kolom Sudah/Belum E-KTP dan Disabilitas masih 0.";
  $("#mn").innerHTML=`<div class="bar"><button class="p" id="imp">📥 Impor Data Pemilih (Excel/CSV)</button><span id="ims" class="m">${st}</span></div>
- <div class="bar m">Kotak berbingkai kuning = isi manual (bisa tempel kolom dari Excel). E-KTP & Disabilitas diambil dari file impor; kolom lain otomatis dari menu Perubahan Data Pemilih. ${first?"Triwulan IV 2026 adalah titik awal: isi PDPB Triwulan Sebelumnya secara manual.":"PDPB Triwulan Sebelumnya otomatis dari Hasil triwulan lalu."} Selisih ≠ 0 berarti belum sama dengan SIDALIH.</div>
+ <div class="bar m">Kotak berbingkai kuning = isi manual (bisa tempel kolom dari Excel). E-KTP & Disabilitas diambil dari file impor; kolom lain otomatis dari menu Perubahan Data Pemilih. ${first?"Triwulan IV 2026 adalah titik awal: PDPB Triwulan Sebelumnya otomatis dari Spreadsheet (sheet REKAPITULASI, kolom G dan H). "+pvTxt():"PDPB Triwulan Sebelumnya otomatis dari Hasil triwulan lalu."} Selisih ≠ 0 berarti belum sama dengan SIDALIH.</div>
  <div class="w" style="max-height:calc(100vh - 250px)"><table id="rk"><tr>${h1}</tr>${h2}</tr>${b}</tr></table></div>`;}
 /* ---------- MENU 3 ---------- */
 const bars=(items,c1,c2)=>{const mx=Math.max(1,...items.map(i=>i[1]));return items.map(([l,v])=>`<div class="br"><span>${l}</span><i style="width:${v/mx*60}%;background:linear-gradient(90deg,${c1},${c2})"></i><span>${fm(v)}</span></div>`).join("")};
@@ -220,7 +224,7 @@ function render(){document.querySelectorAll("#nv button").forEach(b=>b.classList
 /* ---------- events ---------- */
 $("#sy").innerHTML=[2026,2027,2028,2029,2030,2031,2032].map(y=>`<option>${y}</option>`).join("");
 const fillT=()=>{const o=S.y==2026?["IV"]:TW;if(!o.includes(S.t))S.t=o[0];$("#st").innerHTML=o.map(t=>`<option ${t==S.t?"selected":""}>${t}</option>`).join("")};fillT();
-$("#nv").innerHTML=[["dash","📈 Dashboard Analitik"],["data","📝 Perubahan Data Pemilih"],["rekap","📊 Rekapitulasi PDPB"],["log","🕘 Audit Log"],["exp","📤 Export Data"]].map(([t,l])=>`<button data-t="${t}">${l}</button>`).join("");
+$("#nv").innerHTML=[["dash","📈 Dashboard Analitik"],["rekap","📊 Rekapitulasi PDPB"],["data","📝 Perubahan Data Pemilih"],["exp","📤 Export Data"],["log","🕘 Audit Log"]].map(([t,l])=>`<button data-t="${t}">${l}</button>`).join("");
 $("#nv").onclick=e=>{if(e.target.dataset.t){S.tab=e.target.dataset.t;render()}};
 $("#sy").onchange=e=>{S.y=+e.target.value;fillT();S.pg=0;S.dup=false;S.sel.clear();render()};$("#st").onchange=e=>{S.t=e.target.value;S.pg=0;S.dup=false;S.sel.clear();render()};
 const mn=$("#mn");let old="";
@@ -239,7 +243,7 @@ mn.addEventListener("change",e=>{const t=e.target,q=Q();
  if(t.classList.contains("sc")){const r=+t.closest("tr").dataset.r;t.checked?S.sel.add(r):S.sel.delete(r)}
  else if(t.dataset.d){DB.desa[t.dataset.d]=+t.value||0;log("Ubah",`Jumlah Kel/Desa ${t.dataset.d} = ${t.value}`);render()}
  else if(t.dataset.f){const o=q[t.dataset.f][t.dataset.k]=q[t.dataset.f][t.dataset.k]||{};o[t.dataset.g]=+t.value||0;log("Ubah",`${t.dataset.f} ${t.dataset.k} ${t.dataset.g} = ${t.value}`);render()}});
-mn.addEventListener("click",e=>{const id=e.target.id,q=Q();if(e.target.dataset.j){const t=document.getElementById(e.target.dataset.j);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}if(e.target.dataset.x)return runExp(e.target.dataset.x);if(id=="imp")return $("#if").click();if(id=="dk"){const D=dups(q.rows);if(!S.dup&&!D.g)return alert("Tidak ditemukan NIK ganda pada triwulan ini.");S.dup=!S.dup;S.pg=0;return render()}if(id=="rl")return load(key());if(id=="cf2")return setCfg();
+mn.addEventListener("click",e=>{const id=e.target.id,q=Q();if(e.target.dataset.j){const t=document.getElementById(e.target.dataset.j);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});return}if(e.target.dataset.x)return runExp(e.target.dataset.x);if(id=="imp")return $("#if").click();if(id=="dk"){const D=dups(q.rows);if(!S.dup&&!D.g)return alert("Tidak ditemukan NIK ganda pada triwulan ini.");S.dup=!S.dup;S.pg=0;return render()}if(id=="rl"){if(key()=="2026-IV")loadPrev(key());return load(key())}if(id=="cf2")return setCfg();
  if(id=="ar"){q.rows.push(blank());log("Tambah","1 baris kosong");S.pg=Math.floor((q.rows.length-1)/PS);render()}
  if(id=="a50"){for(let i=0;i<50;i++)q.rows.push(blank());log("Tambah","50 baris kosong");S.pg=Math.floor((q.rows.length-1)/PS);render()}
  if(id=="dl"){if(!S.sel.size)return alert("Centang baris yang akan dihapus.");if(!confirm("Hapus "+S.sel.size+" baris terpilih?"))return;
@@ -296,11 +300,11 @@ function sy(op){if(!synced())return;const k=key(),q=Q(),o=op.op=="all"?{op:"all"
   if(w.conflict){alert("Spreadsheet baru saja diubah pihak lain. Data dimuat ulang dari Spreadsheet; mohon ulangi perubahan terakhir Anda.");q.h=0;await load(k)}
   else if(!w.ok)throw new Error(w.err);else{q.h=w.h;save();sstat("✅ Tersimpan di Spreadsheet "+now(),1)}
  }catch(x){sstat("❌ Gagal menyimpan: "+(x.message||x),0)}finally{pend--}})}
-function ensure(){const k=key();if(synced()&&!LD[k]){LD[k]=1;load(k)}}
+function ensure(){const k=key();if(synced()&&!LD[k]){LD[k]=1;load(k);if(k=="2026-IV")loadPrev(k)}}
 function setCfg(){const c=cfg(),u=prompt("Tempel URL Web App Google Apps Script:",c.url);if(u===null)return;c.url=u.trim();save();Object.keys(LD).forEach(k=>delete LD[k]);render()}
 $("#cf").onclick=setCfg;
 setInterval(async()=>{if(!synced()||pend||document.hidden)return;const a=document.activeElement;if(a&&a.isContentEditable)return;const k=key(),q=Q();
- try{const d=await api({a:"ver",q:k});if(d.ok&&d.h!==q.h&&!pend)load(k)}catch(x){}},30000);
+ try{const d=await api({a:"ver",q:k});if(d.ok&&d.h!==q.h&&!pend)load(k);if(k=="2026-IV")loadPrev(k)}catch(x){}},30000);
 /* ---------- EXPORT DATA ---------- */
 const TWT=()=>`TRIWULAN ${S.t} TAHUN ${S.y}`,TGL="**|**|****",ABJ=n=>String.fromCharCode(65+n),tick=()=>new Promise(r=>setTimeout(r));
 const mask=v=>{v=String(v==null?"":v).trim();return v?v.slice(0,6)+"*".repeat(Math.max(0,v.length-6)):""};
