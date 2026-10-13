@@ -266,18 +266,24 @@ const sp=(s,d)=>{if(s.indexOf('"')<0)return s.split(d);const o=[];let c="",q=fal
 const IXN=["KECAMATAN","KELAMIN","DISABILITAS","EKTP","KELURAHAN","NAMA","TEMPAT LAHIR","STS KAWIN","ALAMAT","RT","RW"],IXD=[1,11,15,16,3,7,8,10,12,13,14];
 const hix=h=>IXN.map((x,i)=>{const j=h.findIndex(v=>up(v)==x);return j<0?IXD[i]:j});
 $("#if").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
- const A={},P={};KEC.forEach(n=>{A[n]={};IM.forEach(x=>A[n][x]={L:0,P:0});P[n]=[]});let tot=0,skip=0;const st=m=>{const s=$("#ims");if(s)s.textContent=m},IN=new Map(),tr=v=>String(v==null?"":v).trim(),it=v=>{v=tr(v);const r=IN.get(v);if(r!==undefined)return r;IN.set(v,v);return v};
- const feed=c=>{tot++;const n=mk(c[0]),g=up(c[1]).charAt(0);if(!n||(g!="L"&&g!="P")){skip++;return}const k=up(c[3]).charAt(0),d=tr(c[2]);
+ const A={},P={};KEC.forEach(n=>{A[n]={};IM.forEach(x=>A[n][x]={L:0,P:0});P[n]=[]});let tot=0,skip=0,smp="";const info=[],st=m=>{const s=$("#ims");if(s)s.textContent=m},IN=new Map(),tr=v=>String(v==null?"":v).trim(),it=v=>{v=tr(v);const r=IN.get(v);if(r!==undefined)return r;IN.set(v,v);return v};
+ const feed=c=>{if(c.every(v=>v===""||v==null))return;tot++;const n=mk(c[0]),g=up(c[1]).charAt(0);if(!n||(g!="L"&&g!="P")){if(!smp)smp=`KECAMATAN="${tr(c[0])}", KELAMIN="${tr(c[1])}"`;skip++;return}const k=up(c[3]).charAt(0),d=tr(c[2]);
   if(k=="S")A[n].es[g]++;else if(k=="B")A[n].eb[g]++;if(/^[1-6]$/.test(d))A[n]["d"+d][g]++;
   P[n].push([it(c[4]),tr(c[5]),it(c[6]),it(c[7]),g,tr(c[8]),it(c[9]),it(c[10]),it(d),it(c[3])])};
  try{st("⏳ Membaca file, mohon tunggu…");await new Promise(r=>setTimeout(r,60));
-  if(/\.csv$/i.test(f.name)){const rd=f.stream().getReader(),dec=new TextDecoder();let buf="",ix=null,dl=",",n=0;
-   const line=l=>{if(!l)return;if(!ix){l=l.replace(/^\uFEFF/,"");dl=l.split(";").length>l.split(",").length?";":",";ix=hix(sp(l,dl));return}const c=sp(l,dl);feed(ix.map(j=>c[j]))};
-   for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const L=buf.split(/\r?\n/);buf=L.pop();L.forEach(line);if(++n%10==0){st("⏳ Diproses "+fm(tot)+" baris…");await new Promise(r=>setTimeout(r,0))}}line(buf)}
-  else{const wb=XLSX.read(new Uint8Array(await f.arrayBuffer()),{type:"array",dense:true}),ws=wb.Sheets[wb.SheetNames[0]],rows=ws["!data"]||ws,ix=hix((rows[0]||[]).map(c=>c?String(c.v):""));
-   for(let i=1;i<rows.length;i++){const r=rows[i];if(!r)continue;feed(ix.map(j=>{const x=r[j];return x?x.v:""}))}}
- }catch(x){alert("Gagal membaca file (kemungkinan memori komputer kurang). Solusi: buka file di Excel → Simpan sebagai CSV UTF-8 → impor file CSV itu.");render();return}
- if(!tot){alert("Tidak ada data terbaca. Pastikan baris pertama berisi judul kolom (KECAMATAN, KELAMIN, DISABILITAS, EKTP).");render();return}
+  if(/\.csv$/i.test(f.name)){const rd=f.stream().getReader(),dec=new TextDecoder();let buf="",ix=null,dl=",",n=0,hdr="";
+   const line=l=>{if(!l)return;if(!ix){l=l.replace(/^\uFEFF/,"");hdr=l;dl=l.split(";").length>l.split(",").length?";":",";ix=hix(sp(l,dl));return}const c=sp(l,dl);feed(ix.map(j=>c[j]))};
+   for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const L=buf.split(/\r?\n/);buf=L.pop();L.forEach(line);if(++n%10==0){st("⏳ Diproses "+fm(tot)+" baris…");await new Promise(r=>setTimeout(r,0))}}line(buf);info.push("CSV, baris judul: "+(hdr.slice(0,150)||"(kosong)"))}
+  else{const wb=XLSX.read(new Uint8Array(await f.arrayBuffer()),{type:"array",dense:true,cellText:false,cellNF:false,cellStyles:false});
+   for(const sn of wb.SheetNames){const ws=wb.Sheets[sn],rows=ws["!data"]||ws,L=rows.length||0;let hr=-1;
+    for(let i=0;i<Math.min(L,30);i++){const r=rows[i];if(r&&r.some&&r.some(c=>c&&up(c.v)=="KECAMATAN")){hr=i;break}}
+    if(hr<0){info.push(`sheet "${sn}": ${fm(L)} baris, judul KECAMATAN tidak ditemukan di 30 baris pertama`);continue}
+    const ix=hix(rows[hr].map(c=>c?String(c.v):"")),t0=tot;
+    for(let i=hr+1;i<L;i++){const r=rows[i];if(!r)continue;feed(ix.map(j=>{const x=r[j];return x?x.v:""}))}
+    info.push(`sheet "${sn}": judul di baris ${hr+1}, baris data terbaca: ${fm(tot-t0)}`);if(tot)break}}
+ }catch(x){alert("Gagal membaca file ("+(x.message||x)+").\nKemungkinan memori komputer kurang. Solusi: buka file di Excel → Simpan sebagai CSV UTF-8 → impor file CSV itu.");render();return}
+ if(!tot){alert("Tidak ada baris data yang terbaca.\n\nHasil pembacaan: "+(info.join("; ")||"-")+"\n\nPeriksa: (1) judul kolom (KECAMATAN, KELAMIN, DISABILITAS, EKTP, dst.) ada di baris atas; (2) file benar-benar berisi baris data, bukan hanya judul; (3) untuk file sangat besar, simpan sebagai CSV UTF-8 lalu impor CSV-nya.");render();return}
+ if(tot==skip){alert("Semua "+fm(tot)+" baris dilewati karena KECAMATAN/KELAMIN tidak dikenali.\nContoh baris pertama: "+smp+".\nKECAMATAN harus sama dengan nama 12 kecamatan Pacitan dan KELAMIN berisi L atau P.");render();return}
  PM=P;Q().imp={d:A,file:f.name,rows:tot,skip,at:new Date().toLocaleString("id-ID")};log("Impor",`Impor data pemilih: ${f.name}, ${tot} baris, ${skip} dilewati`);render()};
 /* ---------- SINKRON DUA ARAH DENGAN GOOGLE SPREADSHEET (lewat Apps Script) ---------- */
 const SYNC=["2026-IV","2027-I","2027-II","2027-III","2027-IV"],LD={};let SESS=sessionStorage.getItem("ses")||"",USER=sessionStorage.getItem("usr")||"";let chain=Promise.resolve(),pend=0,ST=["",1];
