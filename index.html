@@ -165,14 +165,14 @@ const pvTxt=()=>{const q=Q();if(!cfg().url||!SESS)return"⚠ Belum tersambung ke
 let PVE="";
 async function loadPrev(k){try{const d=await api({a:"prev",q:k});if(!d.ok)throw new Error(d.err);const q=Q(k),old=JSON.stringify(q.prev||{}),p={};KEC.forEach(n=>{const x=d.prev[n.toUpperCase()];if(x)p[n]={L:x.L,P:x.P}});
  const f0=q.pvm===undefined||!!PVE;q.prev=p;q.pvm=KEC.filter(n=>!p[n]).map(n=>n.toUpperCase());PVE="";save();if((f0||old!==JSON.stringify(p))&&k==key()&&!(document.activeElement&&document.activeElement.tagName=="INPUT"))render()}catch(x){const w=PVE!==String(x.message||x);PVE=String(x.message||x);if(w&&k==key()&&S.tab=="rekap")render()}}
-const TPG=[["REGULER","g11"],["LOKASI KHUSUS","g12"],["JUMLAH","g13"]],TPC=[["rl","g11",1,0],["rp","g11",0,0],["rj","g11",0,1],["kl","g12",1,0],["kp","g12",0,0],["kj","g12",0,1],["jl","g13",1,0],["jp","g13",0,0],["jj","g13",0,1]];
+const TPG=[["REGULER","g11"],["LOKASI KHUSUS","g12"],["JUMLAH","g13"]],TPC=[["rj","g11",1,0],["kj","g12",1,0],["jj","g13",1,1]];
 const tv=(t,f)=>f=="jl"?t.rl+t.kl:f=="jp"?t.rp+t.kp:f=="jj"?t.rj+t.kj:t[f],tpsTd=t=>TPC.map(([f,c,l,j])=>`<td class="n ${c}${l?" gl":""}${j?" jm":""}">${fm(tv(t,f))}</td>`).join("");
 function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp,TP=(im&&im.tps)||{},Z=()=>({kk:0,rl:0,rp:0,rj:0,kl:0,kp:0,kj:0}),S0=Z(),GR=[];
  G.forEach(g=>{if(g[1]=="hasil")GR.push(["Jumlah KK","kk"]);GR.push(g);if(g[1]=="sid")GR.push(["TPS","tps"])});
- let h1='<tr><th rowspan=3>No</th><th rowspan=3>Kecamatan</th><th rowspan=3>Jml Kel/Desa</th>',h2='<tr class="h2">',h3='<tr class="h3">';
- GR.forEach(([l,f])=>{if(f=="kk"){h1+=`<th rowspan=3 class="g10 gl">${l}</th>`;return}
-  if(f=="tps"){h1+=`<th colspan=9 class="g0 gl">TPS</th>`;TPG.forEach(([t,c],i)=>{h2+=`<th colspan=3 class="${c} gl">${t}</th>`;["L","P",i?"L+P":"JML"].forEach((x,j)=>h3+=`<th class="${c}${j?"":" gl"}">${x}</th>`)});return}
-  const c=gc(f);h1+=`<th colspan=3 rowspan=2 class="${c} gl">${l}</th>`;h3+=`<th class="${c} gl">L</th><th class="${c}">P</th><th class="${c}">JML</th>`});
+ let h1='<tr><th rowspan=2>No</th><th rowspan=2>Kecamatan</th><th rowspan=2>Jml Kel/Desa</th>',h2='<tr class="h2">';
+ GR.forEach(([l,f])=>{if(f=="kk"){h1+=`<th rowspan=2 class="g10 gl">${l}</th>`;return}
+  if(f=="tps"){h1+=`<th colspan=3 class="g0 gl">TPS</th>`;TPG.forEach(([t,c])=>h2+=`<th class="${c} gl">${t}</th>`);return}
+  const c=gc(f);h1+=`<th colspan=3 class="${c} gl">${l}</th>`;h2+=`<th class="${c} gl">L</th><th class="${c}">P</th><th class="${c}">JML</th>`});
  let b="",td=0;
  KEC.forEach((n,i)=>{const d=DESA[n],t=TP[n]||Z();td+=d;Object.keys(S0).forEach(x=>S0[x]+=t[x]);
   b+=`<tr><td>${i+1}</td><td><b>${n.toUpperCase()}</b></td><td class="c">${d}</td>`;
@@ -185,8 +185,8 @@ function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp,
  GR.forEach(([l,f])=>{if(f=="kk"){b+=`<td class="n g10 gl jm">${fm(S0.kk)}</td>`;return}if(f=="tps"){b+=tpsTd(S0);return}const c=gc(f);b+=`<td class="n ${c} gl">${fm(T[f].L)}</td><td class="n ${c}">${fm(T[f].P)}</td><td class="n ${c} jm">${fm(T[f].L+T[f].P)}</td>`});
  const st=im?`✅ Data impor: <b>${esc(im.file)}</b> · ${fm(im.rows)} baris · ${im.at}${im.skip?` · ${fm(im.skip)} baris dilewati (kecamatan/kelamin tidak dikenali)`:""}${im.tps?"":" · ⚠ impor ulang file ini agar kolom KK dan TPS terisi"}`:"⚠ Belum ada data impor. Kolom KK, TPS, E-KTP, dan Disabilitas masih 0.";
  $("#mn").innerHTML=`<div class="bar"><button class="p" id="imp">📥 Impor Data Pemilih (Excel/CSV)</button><span id="ims" class="m">${st}</span></div>
- <div class="bar m">Kotak berbingkai kuning = isi manual (bisa tempel kolom dari Excel). KK, TPS, E-KTP & Disabilitas diambil dari file impor; kolom lain otomatis dari menu Perubahan Data Pemilih. ${first?"Triwulan IV 2026 adalah titik awal: PDPB Triwulan Sebelumnya otomatis dari Spreadsheet (sheet REKAPITULASI, kolom G dan H). "+pvTxt():"PDPB Triwulan Sebelumnya otomatis dari Hasil triwulan lalu."} Selisih ≠ 0 berarti belum sama dengan SIDALIH.<br><small>KK = NKK berbeda per kecamatan. TPS dihitung per TPS yang berbeda; Lokasi Khusus = nomor TPS 3 digit berawalan 9 (901, 902, dst.), selain itu Reguler; L / P = jumlah TPS yang memiliki pemilih laki-laki / perempuan.</small></div>
- <div class="w" style="max-height:calc(100vh - 280px)"><table id="rk">${h1}</tr>${h2}</tr>${h3}</tr>${b}</tr></table></div>`;}
+ <div class="bar m">Kotak berbingkai kuning = isi manual (bisa tempel kolom dari Excel). KK, TPS, E-KTP & Disabilitas diambil dari file impor; kolom lain otomatis dari menu Perubahan Data Pemilih. ${first?"Triwulan IV 2026 adalah titik awal: PDPB Triwulan Sebelumnya otomatis dari Spreadsheet (sheet REKAPITULASI, kolom G dan H). "+pvTxt():"PDPB Triwulan Sebelumnya otomatis dari Hasil triwulan lalu."} Selisih ≠ 0 berarti belum sama dengan SIDALIH.<br><small>KK = NKK berbeda per kecamatan. TPS = jumlah TPS yang berbeda per kecamatan (TPS yang muncul berulang dihitung 1). Lokasi Khusus = nomor TPS 3 digit berawalan 9 (901, 902, dst.), selain itu Reguler. Jumlah = Reguler + Lokasi Khusus.</small></div>
+ <div class="w" style="max-height:calc(100vh - 280px)"><table id="rk">${h1}</tr>${h2}</tr>${b}</tr></table></div>`;}
 /* ---------- MENU 3 ---------- */
 const bars=(items,c1,c2)=>{const mx=Math.max(1,...items.map(i=>i[1]));return items.map(([l,v])=>`<div class="br"><span>${l}</span><i style="width:${v/mx*60}%;background:linear-gradient(90deg,${c1},${c2})"></i><span>${fm(v)}</span></div>`).join("")};
 const PAL=["#16a34a","#2563eb","#d97706","#db2777","#0d9488","#7c3aed","#dc2626","#64748b"],esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])),pc=(a,b)=>b?(a/b*100).toFixed(1).replace(".",",")+"%":"0%";
