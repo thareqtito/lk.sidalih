@@ -178,7 +178,7 @@ function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp,
   if(f=="pv"){h1+=`<th colspan=9 class="g0 gl">PEMILIH PER TPS</th>`;[["TPS REGULER","g11","JML"],["TPS LOKASI KHUSUS","g12","L+P"],["JUMLAH","g13","L+P"]].forEach(([t,c,x])=>{h2+=`<th colspan=3 class="${c} gl">${t}</th>`;h3+=`<th class="${c} gl">L</th><th class="${c}">P</th><th class="${c}">${x}</th>`});return}
   const c=gc(f);h1+=`<th colspan=3 rowspan=2 class="${c} gl">${l}</th>`;h3+=`<th class="${c} gl">L</th><th class="${c}">P</th><th class="${c}">JML</th>`});
  let b="",td=0;
- KEC.forEach((n,i)=>{const d=DESA[n],t=TP[n]||Z();td+=d;Object.keys(S0).forEach(x=>S0[x]+=t[x]);
+ KEC.forEach((n,i)=>{const d=DESA[n],t=Object.assign(Z(),TP[n]||{});td+=d;Object.keys(S0).forEach(x=>S0[x]+=t[x]);
   b+=`<tr><td>${i+1}</td><td><b>${n.toUpperCase()}</b></td><td class="c">${d}</td>`;
   GR.forEach(([l,f])=>{if(f=="kk"){b+=`<td class="n g10 gl jm">${fm(t.kk)}</td>`;return}if(f=="tps"){b+=tpsTd(t);return}if(f=="pv"){b+=pvTd(t);return}
    const v=R[n][f],c=gc(f);
@@ -235,7 +235,7 @@ function vDash(){const R=calc(key()),T=tot(R),A=an(),j=f=>T[f].L+T[f].P,H=j("has
 /* ---------- MENU 4 ---------- */
 function vLog(){const L=DB.log.slice(-500).reverse();$("#mn").innerHTML=`<div class="bar m">500 catatan terakhir (semua triwulan).</div><div class="w"><table><tr><th>Waktu</th><th>Triwulan</th><th>Pengguna</th><th>Aksi</th><th>Keterangan</th></tr>${L.map(l=>`<tr><td>${l.t}</td><td>${l.q}</td><td>${l.u||"-"}</td><td>${l.a}</td><td>${String(l.d).replace(/</g,"&lt;")}</td></tr>`).join("")}</table></div>`}
 const V={data:vData,rekap:vRekap,dash:vDash,log:vLog,exp:vExp};
-function render(){document.querySelectorAll("#nv button").forEach(b=>b.classList.toggle("on",b.dataset.t==S.tab));V[S.tab]();ensure();setTop()}
+function render(){document.querySelectorAll("#nv button").forEach(b=>b.classList.toggle("on",b.dataset.t==S.tab));try{V[S.tab]()}catch(e){$("#mn").innerHTML=`<div class="bar m">⚠ Terjadi kesalahan saat menampilkan menu ini: ${esc(e.message||e)}. Coba muat ulang halaman (Ctrl+F5); jika masih terjadi, kirim pesan ini ke pengembang.</div>`;console.error(e)}ensure();setTop()}
 /* ---------- events ---------- */
 $("#sy").innerHTML=[2026,2027,2028,2029,2030,2031,2032].map(y=>`<option>${y}</option>`).join("");
 const fillT=()=>{const o=S.y==2026?["IV"]:TW;if(!o.includes(S.t))S.t=o[0];$("#st").innerHTML=o.map(t=>`<option ${t==S.t?"selected":""}>${t}</option>`).join("")};fillT();
