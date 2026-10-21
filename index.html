@@ -594,11 +594,11 @@ async function runExp(c){const st=m=>{const e=$("#exs");if(e)e.textContent=m},XT
    if(k=="pb"){const L=KEC.filter(n=>PM[n].length),tot=L.reduce((a,n)=>a+PM[n].length,0);if(!L.length)return alert("Tidak ada data impor.");
     if(tot>150000&&!confirm(`Data besar (${fnum(tot)} baris) dalam satu file Excel. Proses bisa beberapa menit dan memakai banyak memori; jika browser macet, gunakan kartu per kecamatan. Lanjutkan?`))return;
     await xl();const wb=new ExcelJS.Workbook();let done=0;
-    for(const n of L){const U=n.toUpperCase(),rows=sorted(n).map((r,i)=>mk(n,r,i)),h=R[n].hasil;st(`⏳ ${U}: ${fnum(done)} dari ${fnum(tot)} baris selesai…`);await tick();
-     await xlTable(D1,rows,U,[h.L+h.P,h.L,h.P],i=>st(`⏳ ${U}: ${fnum(done+i)} dari ${fnum(tot)} baris…`),{wb,name:U});done+=rows.length}
+    for(const n of L){const U=n.toUpperCase(),rows=sorted(n).map((r,i)=>mk(n,r,i)),lk=rows.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ ${U}: ${fnum(done)} dari ${fnum(tot)} baris selesai…`);await tick();
+     await xlTable(D1,rows,U,[rows.length,lk,rows.length-lk],i=>st(`⏳ ${U}: ${fnum(done+i)} dari ${fnum(tot)} baris…`),{wb,name:U});done+=rows.length}
     st("⏳ Menyimpan file Excel…");await tick();dl(new Blob([await wb.xlsx.writeBuffer()],{type:XT}),`A-Daftar_Pemilih_Berkelanjutan_${sf}.xlsx`,XT)}
    else{const n=$("#kpb").value,U=n.toUpperCase();if(!PM[n].length)return alert("Tidak ada data impor untuk kecamatan ini.");
-    if(f=="p"){const rows=sorted(n).map((r,i)=>mk(n,r,i)),h=R[n].hasil;st(`⏳ Menyusun ${U}…`);await tick();dl(await pdfTable(D1,rows,U,[h.L+h.P,h.L,h.P],i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(rows.length)} baris…`)),`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}.pdf`)}
+    if(f=="p"){const rows=sorted(n).map((r,i)=>mk(n,r,i)),lk=rows.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ Menyusun ${U}…`);await tick();dl(await pdfTable(D1,rows,U,[rows.length,lk,rows.length-lk],i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(rows.length)} baris…`)),`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}.pdf`)}
     else{const G=new Map();PM[n].forEach(r=>{const d=r[0]||"(TANPA DESA)";if(!G.has(d))G.set(d,[]);G.get(d).push(r)});const ds=[...G.keys()].sort(COL);await xl();const wb=new ExcelJS.Workbook();let done=0;
      for(const d of ds){const rs=G.get(d).sort((a,b)=>COL(a[1],b[1])),rows=rs.map((r,i)=>[i+1,r[10]||"",r[11]||"",r[1],r[2],TGL,r[3],r[4],r[5],p3(r[6]),p3(r[7]),r[8],""]),lk=rs.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ ${U} - ${d}: ${ds.indexOf(d)+1} dari ${ds.length} desa/kel.…`);await tick();
       await xlTable(D3,rows,U,[rows.length,lk,rows.length-lk],null,{wb,name:d,desa:d});done+=rows.length}
