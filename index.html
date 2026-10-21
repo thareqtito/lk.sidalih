@@ -595,7 +595,7 @@ async function runExp(c){const st=m=>{const e=$("#exs");if(e)e.textContent=m},XT
    if(k=="pb"){const L=KEC.filter(n=>PM[n].length),tot=L.reduce((a,n)=>a+PM[n].length,0);if(!L.length)return alert("Tidak ada data impor.");
     if(tot>150000&&!confirm(`Data besar (${fnum(tot)} baris) dalam satu file Excel. Proses bisa beberapa menit dan memakai banyak memori; jika browser macet, gunakan kartu per kecamatan. Lanjutkan?`))return;
     await xl();const wb=new ExcelJS.Workbook();let done=0;
-    for(const n of L){const U=n.toUpperCase(),rows=sorted(n).map((r,i)=>mk(n,r,i)),lk=rows.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ ${U}: ${fnum(done)} dari ${fnum(tot)} baris selesai…`);await tick();
+    for(const n of L){const U=n.toUpperCase(),rows=sorted(n).map((r,i)=>mk(n,r,i)),lk=rows.filter(r=>String(r[7]).toUpperCase()=="L").length;st(`⏳ ${U}: ${fnum(done)} dari ${fnum(tot)} baris selesai…`);await tick();
      await xlTable(D1,rows,U,[rows.length,lk,rows.length-lk],i=>st(`⏳ ${U}: ${fnum(done+i)} dari ${fnum(tot)} baris…`),{wb,name:U});done+=rows.length}
     st("⏳ Menyimpan file Excel…");await tick();dl(new Blob([await wb.xlsx.writeBuffer()],{type:XT}),`A-Daftar_Pemilih_Berkelanjutan_${sf}.xlsx`,XT)}
    else{const n=$("#kpb").value,U=n.toUpperCase();if(!PM[n].length)return alert("Tidak ada data impor untuk kecamatan ini.");
