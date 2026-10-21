@@ -538,10 +538,10 @@ const HW=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,...Arr
 const san=t=>{t=String(t==null?"":t);if(/[^\x20-\x7e]/.test(t))t=t.replace(/[\u2013\u2014]/g,"-").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\x20-\x7e]/g,"?");return t};
 const wd=t=>{let w=0;for(let i=0;i<t.length;i++)w+=HW[t.charCodeAt(i)-32]||556;return w};
 const pe=t=>t.replace(/[\\()]/g,"\\$&"),f2=n=>String(Math.round(n*100)/100);
-async function pdfTable(D,rows,sc,tot,pg){
+async function pdfTable(D,rows,sc,tot,pg,o){
  const LP=await logoPix().catch(()=>null);
  const PW=842,PH=595,M=28,W=D.pw||D.w,k=(PW-2*M)/W.reduce((a,b)=>a+b),X=[M],NC=W.length,RH=10.5,FS=7,HH=17,pages=[];W.forEach(w=>X.push(X[X.length-1]+w*k));
- let P,y,ty0,yv;
+ let P,y,ty0,yv,cd="";
  const Y=v=>f2(PH-v),ln=(a,b,c,d)=>`${f2(a)} ${Y(b)} m ${f2(c)} ${Y(d)} l S\n`;
  const T=(t,x,yy,fs,b,w)=>{t=san(t);const wt=wd(t)*fs/1000*(b?1.07:1);if(w!=null)x+=(w-wt)/2;return`BT /F${b?2:1} ${fs} Tf 1 0 0 1 ${f2(x)} ${Y(yy+fs*.8)} Tm (${pe(t)}) Tj ET\n`};
  const wrap=(t,w,fs)=>{const o=[];let c="";t.split(" ").forEach(s=>{const n=c?c+" "+s:s;if(c&&wd(n)*fs/1000*1.07>w){o.push(c);c=s}else c=n});o.push(c);return o};
@@ -549,11 +549,11 @@ async function pdfTable(D,rows,sc,tot,pg){
  const begin=(first,bare)=>{P=[];pages.push(P);y=M;ty0=null;
   if(first){if(LP)P.push(`q 41.5 0 0 46 ${f2(X[1]+22)} ${Y(M+46)} cm /Im1 Do Q\n`);const ls=D.T.flatMap(([r,t])=>t.replace("{TW}",TWT()).split("\n")),[c0,,c1]=rng(D.T[0][0]),cx=(X[c0]+X[c1+1])/2;
    ls.forEach((t,i)=>{P.push(T(t,cx,y,i?10:13,1,0).replace(/1 0 0 1 [\d.]+/,m=>"1 0 0 1 "+f2(cx-wd(san(t))*(i?10:13)/2000*1.07)));y+=i?13:17});
-   const[b0,,b1]=rng(D.B);P.push(`0.5 w ${f2(X[b0])} ${Y(M+32)} ${f2(X[b1+1]-X[b0])} 32 re S\n`);D.model.split("\n").forEach((t,i)=>P.push(T(t.trim(),X[b0],M+5+i*11,8,0,X[b1+1]-X[b0])));
-   y+=6;const kv=(a,b)=>{P.push(T(a,X[1]+2,y,8,1));P.push(T(": "+b,X[1]+62,y,8,1));y+=12};kv("PROVINSI","JAWA TIMUR");kv("KABUPATEN","PACITAN");if(sc)kv("KECAMATAN",sc);y+=6}
+   const[b0,,b1]=rng(D.B);P.push(`0.5 w ${f2(X[b0])} ${Y(M+32)} ${f2(X[b1+1]-X[b0])} 32 re S\n`);D.model.split("\n").flatMap(t=>wrap(t.trim(),X[b1+1]-X[b0]-4,8)).forEach((t,i)=>P.push(T(t.trim(),X[b0],M+5+i*11,8,0,X[b1+1]-X[b0])));
+   y+=6;const kv=(a,b)=>{P.push(T(a,X[1]+2,y,8,1));P.push(T(": "+b,X[1]+62,y,8,1));y+=12};kv("PROVINSI","JAWA TIMUR");kv("KABUPATEN","PACITAN");if(D.rk)[["KECAMATAN",sc],["DESA/KELURAHAN",cd]].forEach(([a,b],i)=>{const yy=y-24+i*12,lx=X[NC-2]-28;P.push(T(a,lx,yy,8,1));P.push(T(": "+(b||""),lx+82,yy,8,1))});else if(sc)kv("KECAMATAN",sc);y+=6}
   if(!bare){let s="0.5 w\n";D.hd.forEach(([t,c0,c1,r0,r1])=>{const x0=X[c0],w=X[c1+1]-x0,ya=y+r0*HH,h=(r1-r0+1)*HH;s+=`${f2(x0)} ${Y(ya+h)} ${f2(w)} ${h} re S\n`;const L=wrap(san(t),w-4,6.5),y1=ya+(h-L.length*8)/2;L.forEach((l,i)=>s+=T(l,x0,y1+i*8,6.5,1,w))});
    W.forEach((_,i)=>s+=`${f2(X[i])} ${Y(y+2*HH+10)} ${f2(X[i+1]-X[i])} 10 re S\n`+T(String(i+1),X[i],y+2*HH+1.5,6.5,0,X[i+1]-X[i]));P.push(s);y+=2*HH+10;ty0=y;yv=y}};
- begin(true);
+ const SC=o&&o.secs||[{rows,tot}];let done=0;for(let si=0;si<SC.length;si++){const rows=SC[si].rows,tot=SC[si].tot;cd=SC[si].desa||"";if(si)close();begin(true);
  for(let i=0;i<rows.length;i++){if(y+RH>PH-46){close();begin(false)}
   const r=rows[i];let s="BT /F1 7 Tf\n",tz=100;
   for(let c=0;c<NC;c++){let t=san(r[c]);if(t==="")continue;const w=X[c+1]-X[c]-3;let tw=wd(t)*FS/1000,z=1;if(tw>w){z=w/tw;if(z<.5){z=.5;while(t.length>1&&wd(t)*FS/2000>w)t=t.slice(0,-1)}tw=wd(t)*FS/1000}
@@ -562,7 +562,8 @@ async function pdfTable(D,rows,sc,tot,pg){
  const bl=[...(tot?[["Jumlah Pemilih (L+P) : "+fnum(tot[0]),"Pemilih Laki-laki : "+fnum(tot[1]),"Pemilih Perempuan : "+fnum(tot[2])]]:[]),...D.L.map(a=>a[1])],hh=Math.max(...bl.map(b=>b.length))*9+8;
  if(y+hh+16>PH-40){close();begin(false,true)}
  y+=16;let x=X[1];bl.forEach(b=>{b.forEach((t,i)=>P.push(T(t,x,y+i*9,7,0)));x+=Math.max(...b.map(t=>wd(san(t))))*7/1000+26});
- close();pg&&pg(rows.length);
+ done+=rows.length}
+ close();pg&&pg(done);
  const N=pages.length,parts=[],off=[];let pos=0;const add=s=>{parts.push(s);pos+=s.length},obj=(n,b)=>{off[n]=pos;add(`${n} 0 obj\n${b}\nendobj\n`)};
  const zip=typeof CompressionStream!="undefined",cb=async u=>zip?new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new CompressionStream("deflate"))).arrayBuffer()):u;add("%PDF-1.4\n");obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,`<< /Type /Pages /Count ${N} /Kids [${pages.map((_,i)=>`${7+2*i} 0 R`).join(" ")}] >>`);obj(3,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");obj(4,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
  const so=async(n,d,u)=>{const z=await cb(u);off[n]=pos;add(`${n} 0 obj\n<< ${d} /Length ${z.length}${zip?" /Filter /FlateDecode":""} >>\nstream\n`);parts.push(z);pos+=z.length;add("\nendstream\nendobj\n")};
@@ -598,7 +599,7 @@ async function runExp(c){const st=m=>{const e=$("#exs");if(e)e.textContent=m},XT
      await xlTable(D1,rows,U,[rows.length,lk,rows.length-lk],i=>st(`⏳ ${U}: ${fnum(done+i)} dari ${fnum(tot)} baris…`),{wb,name:U});done+=rows.length}
     st("⏳ Menyimpan file Excel…");await tick();dl(new Blob([await wb.xlsx.writeBuffer()],{type:XT}),`A-Daftar_Pemilih_Berkelanjutan_${sf}.xlsx`,XT)}
    else{const n=$("#kpb").value,U=n.toUpperCase();if(!PM[n].length)return alert("Tidak ada data impor untuk kecamatan ini.");
-    if(f=="p"){const rows=sorted(n).map((r,i)=>mk(n,r,i)),lk=rows.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ Menyusun ${U}…`);await tick();dl(await pdfTable(D1,rows,U,[rows.length,lk,rows.length-lk],i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(rows.length)} baris…`)),`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}.pdf`)}
+    if(f=="p"){const G=new Map();PM[n].forEach(r=>{const d=r[0]||"(TANPA DESA)";if(!G.has(d))G.set(d,[]);G.get(d).push(r)});const ds=[...G.keys()].sort(COL),all=PM[n].length,secs=ds.map(d=>{const rs=G.get(d).sort((a,b)=>COL(a[1],b[1])),lk=rs.filter(r=>String(r[4]).toUpperCase()=="L").length;return{desa:d,rows:rs.map((r,i)=>[i+1,r[10]||"",r[11]||"",r[1],r[2],TGL,r[3],r[4],r[5],p3(r[6]),p3(r[7]),r[8],""]),tot:[rs.length,lk,rs.length-lk]}});st(`⏳ Menyusun ${U}…`);await tick();dl(await pdfTable(D3,null,U,null,i=>st(`⏳ ${U}: ${fnum(i)} dari ${fnum(all)} baris…`),{secs}),`A-Daftar_Pemilih_Berkelanjutan_${U}_${sf}.pdf`)}
     else{const G=new Map();PM[n].forEach(r=>{const d=r[0]||"(TANPA DESA)";if(!G.has(d))G.set(d,[]);G.get(d).push(r)});const ds=[...G.keys()].sort(COL);await xl();const wb=new ExcelJS.Workbook();let done=0;
      for(const d of ds){const rs=G.get(d).sort((a,b)=>COL(a[1],b[1])),rows=rs.map((r,i)=>[i+1,r[10]||"",r[11]||"",r[1],r[2],TGL,r[3],r[4],r[5],p3(r[6]),p3(r[7]),r[8],""]),lk=rs.filter(r=>String(r[4]).toUpperCase()=="L").length;st(`⏳ ${U} - ${d}: ${ds.indexOf(d)+1} dari ${ds.length} desa/kel.…`);await tick();
       await xlTable(D3,rows,U,[rows.length,lk,rows.length-lk],null,{wb,name:d,desa:d});done+=rows.length}
