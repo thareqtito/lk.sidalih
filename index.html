@@ -885,7 +885,7 @@ body.bgpage .wrap{background:transparent}
 .tchips .chip b{margin-left:7px;font-weight:800}
 @media(max-width:720px){.tmsrow{flex-direction:column;align-items:flex-start;gap:10px}.tmsleft{min-width:0}}
 @media(max-width:600px){.hero{padding:18px 16px}.hero .big{font-size:40px}.hero h2{font-size:16px}.hero .item .num{font-size:28px}.hero .item .ds,.hero .item ul.sub{font-size:14.5px}}
-#mn #px{color:#c8102e}
+body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none}.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;height:calc(100vh - 32px)}.trio .hero{margin:0;height:100%;overflow:auto;box-sizing:border-box}.trio .items{display:flex;flex-direction:column;grid-template-columns:none;gap:10px}.trio .tmsrow{flex-direction:column;align-items:flex-start;gap:8px}.trio .tchips{justify-content:flex-start}.trio .big{font-size:44px}#mn #px{color:#c8102e}
 </style>
 </head>
 <body>
@@ -932,7 +932,7 @@ const num=s=>{const d=String(s).replace(/\D/g,"");return d===""?null:parseInt(d,
 const val=(A,r,c)=>c.calc?c.calc(r||{}):(r?.[c.k]??null);
 
 function render(full){
-  document.body.classList.remove("bgpage");
+  document.body.classList.remove("bgpage","dashmode");
   if(app==="dash"){showDash();return}
   document.body.classList.add("bgpage");
   $("tv").style.display="";$("dv").style.display="none";
@@ -1040,7 +1040,7 @@ function split(l,x,c1,c2){
 }
 const PAL=["#ffd54f","#4fc3f7","#7e57c2","#81c784","#ba68c8","#ff8a65","#a1887f","#90a4ae"];
 const tcase=s=>String(s).toLowerCase().replace(/(^|[\s(\/-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
-const srcTxt=src=>src.length?"Sumber data: "+src.map(x=>tcase(x[0])+" ("+fmt(x[1])+")").join(", ")+".":"";
+const srcTxt=src=>src.length?"Sumber data: "+src.map(x=>String(x[0]).toUpperCase()+" ("+fmt(x[1])+")").join(", ")+".":"";
 function groupCard(cls,title,biglbl,G,extra){
   const T=G.reduce((a,x)=>a+x.n,0);
   if(!T)return '<div class="hero '+cls+'"><h2>'+title+'</h2><div class="big">0</div><div class="biglbl">'+biglbl+'</div><div class="note">Belum ada data pada triwulan ini.</div></div>';
@@ -1058,14 +1058,15 @@ function tmsDetailCard(){
   let s='<div class="hero tms"><h2>Rincian Pemilih Tidak Memenuhi Syarat (TMS) \u2022 '+D.cn+' '+D.y+'</h2><div class="big">'+fmt(T)+'</div><div class="biglbl">Total Pemilih TMS Kabupaten Pacitan</div>';
   if(!T)return s+'<div class="note">Belum ada data pada triwulan ini.</div></div>';
   s+='<div class="stack">'+CATD.map(c=>'<i style="width:'+(c.n/T*100)+'%;background:'+c.c+'" title="'+c.k+': '+fmt(c.n)+'"></i>').join("")+'</div>';
-  s+='<div class="tmslist">'+CATD.map(c=>'<div class="tmsrow"><div class="tmsleft"><span class="dot" style="background:'+c.c+'"></span><div><div class="tl">'+c.k+'</div><div class="tv">'+fmt(c.n)+'<span class="tp">('+pc(c.n/T*100,2)+')</span></div></div></div><div class="tchips">'+c.src.map(it=>'<span class="chip">'+tcase(it[0])+'<b>'+fmt(it[1])+'</b></span>').join("")+'</div></div>').join("")+'</div>';
+  s+='<div class="tmslist">'+CATD.map(c=>'<div class="tmsrow"><div class="tmsleft"><span class="dot" style="background:'+c.c+'"></span><div><div class="tl">'+c.k+'</div><div class="tv">'+fmt(c.n)+'<span class="tp">('+pc(c.n/T*100,2)+')</span></div></div></div><div class="tchips">'+c.src.map(it=>'<span class="chip">'+String(it[0]).toUpperCase()+'<b>'+fmt(it[1])+'</b></span>').join("")+'</div></div>').join("")+'</div>';
   if(D.hero.zero.length)s+='<div class="note">Kategori '+D.hero.zero.join(", ")+' tidak memiliki data TMS pada '+D.cn+' '+D.y+'.</div>';
   return s+'</div>';
 }
 function ubahDetailCard(){
   return groupCard("ubah","Rincian Perubahan Data Pemilih \u2022 "+D.cn+" "+D.y,"Total Perbaikan Data Pemilih Kabupaten Pacitan",D.hero.ubah,"");
 }
-function dashHTML(){
+function dashHTML(){return '<div class="trio">'+heroCard()+tmsDetailCard()+ubahDetailCard()+'</div>';}
+function dashHTMLOld(){
   const o=agg(dsel),g=dgen,gl=g==="L"?" (Laki-laki)":g==="P"?" (Perempuan)":"";
   const B=sm(o.b,g),T=sm(o.t,g),F=sm(o.f,g),U=sm(o.u,g),net=B-T,off=(dsel==null&&g==="all"),prev=off?T2.f:F-net;
   let s=heroCard();
@@ -1120,7 +1121,7 @@ function dashHTML(){
   return s;
 }
 function showDash(){
-  $("tv").style.display="none";$("dv").style.display="block";
+  document.body.classList.add("dashmode");$("tv").style.display="none";$("dv").style.display="block";
   $("dv").innerHTML=dashHTML();menu();
 }
 $("dv").addEventListener("click",e=>{
