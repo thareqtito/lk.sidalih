@@ -885,8 +885,34 @@ body.bgpage .wrap{background:transparent}
 .tchips .chip b{margin-left:7px;font-weight:800}
 @media(max-width:720px){.tmsrow{flex-direction:column;align-items:flex-start;gap:10px}.tmsleft{min-width:0}}
 @media(max-width:600px){.hero{padding:18px 16px}.hero .big{font-size:40px}.hero h2{font-size:16px}.hero .item .num{font-size:28px}.hero .item .ds,.hero .item ul.sub{font-size:14.5px}}
-body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none}.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;height:calc(100vh - 32px)}.trio .hero{margin:0;height:100%;overflow:auto;box-sizing:border-box}.trio .items{display:flex;flex-direction:column;grid-template-columns:none;gap:10px}.trio .tmsrow{flex-direction:column;align-items:flex-start;gap:8px}.trio .tchips{justify-content:flex-start}.trio .big{font-size:44px}#mn #px{color:#c8102e}
-</style>
+body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;height:calc(100vh - 32px)}
+.trio .hero{position:relative;overflow:hidden;margin:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;text-align:center;padding:max(28px,7vh) 30px 28px;border-radius:26px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.trio .hero::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;top:-170px;background:radial-gradient(circle,rgba(255,255,255,.22),rgba(255,255,255,0) 68%);pointer-events:none}
+.trio .hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;left:-150px;bottom:-150px;background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,0) 68%);pointer-events:none}
+.trio .hero>*{position:relative;z-index:1}
+.trio .hero h2{font-size:17px;letter-spacing:1.2px;line-height:1.4;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,.28)}
+.trio .hero h2::before{display:flex;width:64px;height:64px;margin:0 auto 14px;align-items:center;justify-content:center;font-size:32px;border-radius:50%;background:rgba(255,255,255,.18);box-shadow:0 0 0 8px rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.4);content:"\1F195"}
+.trio .hero.tms h2::before{content:"\1F6AB"}
+.trio .hero.ubah h2::before{content:"\270F\FE0F"}
+.trio .big{font-size:84px;font-weight:800;letter-spacing:-2px;line-height:1;margin:6px 0 8px;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.trio .biglbl{font-size:16px;opacity:.92;margin-bottom:16px}
+.trio .stack{height:14px;border-radius:7px;margin:4px 6px 22px;box-shadow:0 2px 8px rgba(0,0,0,.25),inset 0 0 0 1px rgba(255,255,255,.3)}
+.trio .items{display:flex;flex-direction:column;gap:12px}
+.trio .item{background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.26));border:1px solid rgba(255,255,255,.3);border-radius:18px;padding:16px 18px;backdrop-filter:blur(2px);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.trio .item .itl{font-size:14px;letter-spacing:1px}
+.trio .item .num{justify-content:center;font-size:42px}
+.trio .item .pc{font-size:16px;background:rgba(255,255,255,.2);border-radius:14px;padding:2px 10px}
+.trio .item .ds{font-size:13.5px;line-height:1.5;opacity:.92}
+.trio .tmslist{display:flex;flex-direction:column;gap:12px}
+.trio .tmsrow{flex-direction:column;align-items:center;gap:10px;padding:16px 14px;border:1px solid rgba(255,255,255,.3);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(0,0,0,.26));box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.trio .tmsrow:last-child{border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:16px}
+.trio .tmsleft{justify-content:center;text-align:center;flex-direction:column;gap:6px;min-width:0}
+.trio .tmsleft>div{text-align:center}
+.trio .tmsleft .tv{font-size:40px;font-weight:800}
+.trio .tchips{justify-content:center;flex:none}
+.trio .tchips .chip{font-size:12.5px;white-space:normal;text-align:center}
+.trio .note{font-size:13px;opacity:.85;margin-top:16px}</style>
 </head>
 <body>
 <div class="wrap">
