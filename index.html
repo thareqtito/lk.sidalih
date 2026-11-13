@@ -274,7 +274,7 @@ function vRekap(){const k=key(),R=calc(k),first=!prevKey(k),T=tot(R),im=Q().imp,
  b+=`<tr class="tot"><td colspan=2>JUMLAH</td><td class="c">${td}</td>`;
  GR.forEach(([l,f])=>{if(f=="kk"){b+=`<td class="n g10 gl jm">${fm(S0.kk)}</td>`;return}if(f=="tps"){b+=tpsTd(S0);return}if(f=="pv"){b+=pvTd(S0);return}const c=gc(f);b+=`<td class="n ${c} gl">${fm(T[f].L)}</td><td class="n ${c}">${fm(T[f].P)}</td><td class="n ${c} jm">${fm(T[f].L+T[f].P)}</td>`});
  const st=im?`✅ Data impor: <b>${esc(im.file)}</b> · ${fm(im.rows)} baris · ${im.at}${im.skip?` · ${fm(im.skip)} baris dilewati (kecamatan/kelamin tidak dikenali)`:""}${im.tps&&im.tps[KEC[0]]&&im.tps[KEC[0]].vrl!==undefined?"":" · ⚠ impor ulang file ini agar kolom KK, TPS, dan Pemilih per TPS terisi"}`:"⚠ Belum ada data impor. Kolom KK, TPS, E-KTP, dan Disabilitas masih 0.";
- $("#mn").innerHTML=`<div class="bar"><button class="p" id="imp">📥 Impor Data Pemilih (Excel/CSV)</button><span id="ims" class="m">${st}</span><button class="p" id="pleno" style="margin-left:auto" title="Tampilan layar penuh untuk rapat pleno">🏛️ Pleno PDPB</button></div>
+ $("#mn").innerHTML=`<div class="bar"><button class="p" id="imp">📥 Impor Data Pemilih (Excel/CSV)</button><span id="ims" class="m">${st}</span></div>
  <div class="bar m">Kotak berbingkai kuning = isi manual (bisa tempel kolom dari Excel). KK, TPS, E-KTP & Disabilitas diambil dari file impor; kolom lain otomatis dari menu Perubahan Data Pemilih. ${first?"Triwulan IV 2026 adalah titik awal: PDPB Triwulan Sebelumnya otomatis dari Spreadsheet (sheet REKAPITULASI, kolom G dan H). "+pvTxt():"PDPB Triwulan Sebelumnya otomatis dari Hasil triwulan lalu."} Selisih ≠ 0 berarti belum sama dengan SIDALIH.<br><small>KK = NKK berbeda per kecamatan. TPS = jumlah TPS yang berbeda per kecamatan (TPS yang muncul berulang dihitung 1). Lokasi Khusus = nomor TPS 3 digit berawalan 9 (901, 902, dst.), selain itu Reguler. Jumlah = Reguler + Lokasi Khusus. Pemilih per TPS = jumlah pemilih (L dan P) pada TPS Reguler dan Lokasi Khusus.</small></div>
  <div class="w" style="max-height:calc(100vh - 280px)"><table id="rk">${h1}</tr>${h2}</tr>${h3}</tr>${b}</tr></table></div>`;}
 /* ---------- MENU 3 ---------- */
@@ -329,7 +329,7 @@ function vDash(){const R=calc(key()),T=tot(R),A=an(),j=f=>T[f].L+T[f].P,H=j("has
    <div class="dz-gcs">${gv.map(g=>`<div class="dz-gc2${g==top&&g.J?" top":""}" style="--c:${g.c};--bg:${g.bg};--bd:${g.bd}">${g==top&&g.J?'<span class="dz-tag">TERBESAR</span>':""}<div class="dz-gt"><span class="dz-ini">${g.ini}</span><span class="dz-pc">${pc2(g.J,GT)}</span></div><b class="dz-gname">${g.nm}</b><div class="dz-gy">${yr(g)}</div><div class="dz-gnum">${fm(g.J)} <small>Jiwa</small></div><div class="dz-gpb"><i style="width:${GT?g.J/GT*100:0}%"></i></div><div class="dz-gsx"><div><span>♂ Laki-laki:</span><b>${fm(g.L)}</b></div><div><span>♀ Perempuan:</span><b>${fm(g.P)}</b></div></div></div>`).join("")}</div>
    <div class="dz-fact"><span class="dz-bulb">💡</span><div><b>Fakta Demografi:</b> Generasi Muda (Gen Z &amp; Milenial) menguasai <b>${pc2(yg,GT)} (${fm(yg)} Pemilih)</b> dari total pemilih di Kabupaten Pacitan${yg*2>GT?", menjadikannya kelompok pemilih mayoritas.":`. Kelompok terbesar adalah ${top.nm} (${pc2(top.J,GT)}).`}${AG.unk||AG.out?` <span class="dz-fn">${fm(AG.unk+AG.out)} pemilih tanpa tanggal lahir yang terbaca tidak dipetakan.</span>`:""}</div><span class="dz-acc">Akumulasi: L ${fm(LT)} | P ${fm(PT)}</span></div>`)}
  else secGen=sec("04","Klasifikasi umur & generasi pemilih","Komposisi sebaran pemilih Kabupaten Pacitan berdasarkan kelompok usia dan generasi.","",`<div class="dz-em">⚠ Belum ada data. Impor file data pemilih (CSV/Excel) di menu Rekapitulasi PDPB; klasifikasi dibaca dari kolom TANGGAL LAHIR (impor ulang jika file sudah pernah diimpor).</div>`);
- $("#mn").innerHTML=`<div class="dz"><div class="dz-dlb"><span>📄 <b>Rincian Perubahan Data</b> — Triwulan ${S.t} Tahun ${S.y}</span><span><button data-dl="docx">⬇ Unduh Word (.docx)</button><button data-dl="pdf">⬇ Unduh PDF</button></span></div>
+ $("#mn").innerHTML=`<div class="dz"><div class="dz-dlb"><span>📄 <b>Rincian Perubahan Data</b> — Triwulan ${S.t} Tahun ${S.y}</span><span><button class="p" id="pleno" title="Tampilan layar penuh untuk rapat pleno">🏛️ Pleno PDPB</button><button data-dl="docx">⬇ Unduh Word (.docx)</button><button data-dl="pdf">⬇ Unduh PDF</button></span></div>
  <div class="dz-top"><div class="dz-card dz-main"><div class="dz-row"><b>Total data pemilih saat ini</b><span class="dz-badge">Triwulan ${S.t} ${S.y}</span></div>
   <div class="dz-num"><span class="dz-big">${fm(H)}</span> <span class="dz-u">pemilih</span></div>
   <div class="dz-lpw">${lp(HL,HP)}<div class="dz-bw"><div class="dz-pb"><i style="width:${H?HL/H*100:0}%"></i></div><div class="dz-row"><small>L ${pc2(HL,H)}</small><small>P ${pc2(HP,H)}</small></div><small class="dz-mut">dari total pemilih saat ini</small></div></div>
@@ -912,6 +912,7 @@ body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none
 .trio .tmsleft .tv{font-size:40px;font-weight:800}
 .trio .tchips{justify-content:center;flex:none}
 .trio .tchips .chip{font-size:12.5px;white-space:normal;text-align:center}
+.trio .srl{margin-top:10px;text-align:center}.trio .srh{font-size:12.5px;opacity:.85;margin-bottom:6px}.trio .sri{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:6px 10px;margin-top:6px;font-size:12.5px;line-height:1.35}.trio .sri b{background:rgba(255,255,255,.22);border-radius:10px;padding:1px 9px;font-size:13px}
 .trio .note{font-size:13px;opacity:.85;margin-top:16px}</style>
 </head>
 <body>
@@ -1066,7 +1067,7 @@ function split(l,x,c1,c2){
 }
 const PAL=["#ffd54f","#4fc3f7","#7e57c2","#81c784","#ba68c8","#ff8a65","#a1887f","#90a4ae"];
 const tcase=s=>String(s).toLowerCase().replace(/(^|[\s(\/-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
-const srcTxt=src=>src.length?"Sumber data: "+src.map(x=>String(x[0]).toUpperCase()+" ("+fmt(x[1])+")").join(", ")+".":"";
+const srcTxt=src=>src.length?'<div class="srl"><div class="srh">Sumber data:</div>'+src.map(x=>'<div class="sri"><span>'+String(x[0]).toUpperCase()+'</span><b>'+fmt(x[1])+'</b></div>').join("")+'</div>':"";
 function groupCard(cls,title,biglbl,G,extra){
   const T=G.reduce((a,x)=>a+x.n,0);
   if(!T)return '<div class="hero '+cls+'"><h2>'+title+'</h2><div class="big">0</div><div class="biglbl">'+biglbl+'</div><div class="note">Belum ada data pada triwulan ini.</div></div>';
