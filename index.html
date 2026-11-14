@@ -496,6 +496,7 @@ function smModel(d){
   if(!ne.length)t="sp";
   else if(/jumlah\s+total/i.test(txt))t="tot";
   else if(ne.length==1&&!num(cells[ne[0]])&&ne[0]<=1)t="title";
+  else if(ne.length==2&&ne[0]==0&&/^\d+\.?$/.test(cells[0].trim())&&!num(cells[ne[1]])&&ne[1]<=2)t="title";
   else if(!cells.some((x,c)=>c>0&&x!==""&&num(x)))t="hdr";
   else t="data";
   const row={r,t,sec,ed:null,mk:null,blk:null};
@@ -517,7 +518,7 @@ function smHTML(d){
  M.rows.forEach(w=>{
   const r=w.r,cells=d.d[r];
   if(w.t=="sp"){s+='<tr class="sm-sp"><td colspan="'+M.C+'"></td></tr>';return}
-  if(w.t=="title"){const x=cells.find(v=>String(v)!=="");s+='<tr class="sm-title s'+w.sec+(first?" first":"")+'"><td colspan="'+M.C+'">'+esc(x)+'</td></tr>';first=false;return}
+  if(w.t=="title"){const x=cells.filter(v=>String(v)!=="").join("   ");s+='<tr class="sm-title s'+w.sec+(first?" first":"")+'"><td colspan="'+M.C+'">'+esc(x)+'</td></tr>';first=false;return}
   s+='<tr class="sm-'+w.t+' s'+w.sec+'">';
   for(let c=0;c<M.C;c++){
    if(M.cov[r+","+c])continue;const o=M.org[r+","+c],x=String(cells[c]==null?"":cells[c]),isN=/^-?[\d.,]+%?$|^-$/.test(x.trim());
