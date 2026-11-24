@@ -1339,7 +1339,7 @@ body.bgpage .wrap{background:transparent}
 
 .hero{border-radius:18px;padding:26px 28px;margin-bottom:22px;background:linear-gradient(135deg,#0b3d20,#1e8449 55%,#6fcf8f);color:#fff;box-shadow:0 8px 22px rgba(20,120,60,.28);text-shadow:0 1px 3px rgba(0,0,0,.45)}
 .hero.tms{background:linear-gradient(135deg,#3a0a0a,#7a1717 55%,#a82222)}
-.hero.ubah{background:linear-gradient(135deg,#4a3600,#6e4e00 55%,#96690a)}
+.hero.ubah{background:linear-gradient(135deg,#071f4a,#124a9c 55%,#2f84e6);box-shadow:0 8px 22px rgba(20,90,200,.30)}
 .hero h2{margin:0 0 4px;font-size:19px;letter-spacing:.3px;font-weight:700;text-transform:uppercase;color:#fff}
 .hero .big{font-size:58px;font-weight:800;line-height:1.1;margin:2px 0 6px;color:#fff}
 .hero .biglbl{font-size:17px;margin-bottom:18px;color:#fff}
@@ -1373,7 +1373,7 @@ body.bgpage .wrap{background:transparent}
 @media(max-width:600px){.hero{padding:18px 16px}.hero .big{font-size:40px}.hero h2{font-size:16px}.hero .item .num{font-size:28px}.hero .item .ds,.hero .item ul.sub{font-size:14.5px}}
 body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none}
 .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;height:calc(100vh - 32px)}
-.trio .hero{position:relative;overflow:hidden;margin:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;align-items:stretch;text-align:center;padding:34px 30px;border-radius:26px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
+.trio .hero{position:relative;overflow:auto;margin:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;text-align:center;padding:26px 22px;scrollbar-width:none;border-radius:26px;box-shadow:0 14px 34px rgba(0,0,0,.28)}
 .trio .hero::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;top:-170px;background:radial-gradient(circle,rgba(255,255,255,.22),rgba(255,255,255,0) 68%);pointer-events:none}
 .trio .hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;left:-150px;bottom:-150px;background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,0) 68%);pointer-events:none}
 .trio .hero>*{position:relative;z-index:1}
@@ -1398,7 +1398,7 @@ body.dashmode .wrap{max-width:none;padding:16px}body.dashmode .dv{max-width:none
 .trio .tmsleft .tv{font-size:40px;font-weight:800}
 .trio .tchips{justify-content:center;flex:none}
 .trio .tchips .chip{font-size:12.5px;white-space:normal;text-align:center}
-.trio .srl{margin-top:10px;text-align:center}.trio .srh{font-size:12.5px;opacity:.85;margin-bottom:6px}.trio .sri{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:6px 10px;margin-top:6px;font-size:12.5px;line-height:1.35}.trio .sri b{background:rgba(255,255,255,.22);border-radius:10px;padding:1px 9px;font-size:13px}
+.trio .srl{margin-top:10px;text-align:center}.trio .srh{font-size:12.5px;opacity:.85;margin-bottom:6px}.trio .sri{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:6px 10px;margin-top:6px;font-size:12.5px;line-height:1.35}.trio .sri b{background:rgba(255,255,255,.22);border-radius:10px;padding:1px 9px;font-size:13px}.trio .hero>:first-child{margin-top:auto}.trio .hero>:last-child{margin-bottom:auto}.trio .srm .srg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}.trio .srm .sri{margin-top:0;padding:3px 6px;font-size:10.5px;line-height:1.25;border-radius:9px;justify-content:space-between;text-align:left;flex-wrap:nowrap;gap:6px}.trio .srm .sri b{font-size:11px;padding:1px 7px;flex:none}.trio .srm .srh{margin-bottom:5px}.trio .item:has(.srm){padding:12px 12px}.trio .hero{padding:18px 18px 16px}.trio .hero h2{font-size:14.5px;padding-bottom:10px;margin-bottom:8px;letter-spacing:1px}.trio .hero h2::before{width:46px;height:46px;font-size:23px;margin-bottom:8px;box-shadow:0 0 0 5px rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.4)}.trio .big{font-size:52px;margin:0 0 2px}.trio .biglbl{font-size:14px;margin-bottom:8px}.trio .stack{height:10px;margin:2px 4px 12px}.trio .items,.trio .tmslist{gap:8px}.trio .item{padding:8px 10px;border-radius:14px}.trio .item .num{font-size:30px}.trio .item .itl{font-size:12.5px;margin-bottom:2px}.trio .item .pc{font-size:13px}.trio .tmsrow{padding:10px 10px;gap:6px;border-radius:14px}.trio .tmsleft .tv{font-size:30px}.trio .tmsleft .tl{font-size:15px}.trio .srl{margin-top:6px}.trio .srh{font-size:11.5px;margin-bottom:4px}.trio .item .ds{font-size:12px;margin-top:4px}.trio .note{margin-top:10px}@media(max-width:1100px){.trio .big{font-size:50px}.trio .item .num{font-size:28px}}@media(max-width:900px){.trio{grid-template-columns:1fr;height:auto}.trio .hero{height:auto;min-height:0}}
 .trio .note{font-size:13px;opacity:.85;margin-top:16px}</style>
 </head>
 <body>
@@ -1553,7 +1553,7 @@ function split(l,x,c1,c2){
 }
 const PAL=["#ffd54f","#4fc3f7","#7e57c2","#81c784","#ba68c8","#ff8a65","#a1887f","#90a4ae"];
 const tcase=s=>String(s).toLowerCase().replace(/(^|[\s(\/-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
-const srcTxt=src=>src.length?'<div class="srl"><div class="srh">Sumber data:</div>'+src.map(x=>'<div class="sri"><span>'+String(x[0]).toUpperCase()+'</span><b>'+fmt(x[1])+'</b></div>').join("")+'</div>':"";
+const srcTxt=src=>src.length?'<div class="srl'+(src.length>3?' srm':'')+'"><div class="srh">Sumber data:</div><div class="srg">'+src.map(x=>{const f=String(x[0]).toUpperCase(),s=src.length>3?f.replace(/^LOKSUS\s+/,'').replace(/^KABUPATEN\s+/,''):f;return '<div class="sri" title="'+f+'"><span>'+s+'</span><b>'+fmt(x[1])+'</b></div>'}).join("")+'</div></div>':"";
 function groupCard(cls,title,biglbl,G,extra){
   const T=G.reduce((a,x)=>a+x.n,0);
   if(!T)return '<div class="hero '+cls+'"><h2>'+title+'</h2><div class="big">0</div><div class="biglbl">'+biglbl+'</div><div class="note">Belum ada data pada triwulan ini.</div></div>';
