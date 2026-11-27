@@ -265,6 +265,15 @@ input.sm-in[disabled]{opacity:.6}
 #shell nav button.on{background:linear-gradient(90deg,#e9f6f5,#fff);color:var(--p);font-weight:700}
 #shell nav button.on::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;border-radius:0 5px 5px 0;background:#3b8fd6}
 #shell main{flex:1;min-width:0}
+#shell nav .nvt{padding:9px 8px;align-items:flex-end;border-bottom:1px solid #eef0f4;color:#7b8794}
+#shell nav .nvt svg{width:20px;height:20px;transition:transform .2s}
+#shell.mini nav{width:62px}
+#shell.mini nav .nvt{align-items:center}#shell.mini nav .nvt svg{transform:rotate(180deg)}
+#shell.mini nav button span{display:none}
+#shell.mini nav button{padding:15px 6px}
+#shell.mini nav button svg{width:25px;height:25px}
+#shell.mini nav button.on::before{top:10px;bottom:10px;width:4px}
+@media(max-width:760px){#shell nav .nvt{display:none}#shell.mini nav{width:100%}#shell.mini nav button span{display:block}}
 @media(max-width:760px){#shell{flex-direction:column}#shell nav{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;margin:8px 0 0;border-radius:0;box-shadow:0 2px 10px rgba(15,40,70,.08)}#shell nav button{flex:none;min-width:88px;border-bottom:0;border-right:1px solid #eef0f4}#shell nav button.on::before{left:10px;right:10px;top:auto;bottom:0;width:auto;height:4px;border-radius:4px 4px 0 0}}
 .lgd{display:flex;gap:8px;margin-top:4px;border-top:1px solid var(--b);padding-top:12px}.lgd a{flex:1;text-align:center;white-space:nowrap;display:flex;align-items:center;justify-content:center;padding:9px 6px;border:1px solid var(--b);border-radius:10px;color:var(--p);font-weight:600;font-size:14px;text-decoration:none;background:#fff}.lgd a:hover{background:var(--hov)}
 </style></head><body class="nl">
@@ -762,8 +771,9 @@ function render(){document.querySelectorAll("#nv button").forEach(b=>b.classList
 $("#sy").innerHTML=[2026,2027,2028,2029,2030,2031,2032].map(y=>`<option>${y}</option>`).join("");
 const fillT=()=>{const o=S.y==2026?["IV"]:TW;if(!o.includes(S.t))S.t=o[0];$("#st").innerHTML=o.map(t=>`<option ${t==S.t?"selected":""}>${t}</option>`).join("")};fillT();
 const NVI={dash:"M3 4h18v11H3z M12 15l-3.5 5 M12 15l3.5 5 M8 12V9 M12 12V7 M16 12v-2",rekap:"M9 3.5h6v3H9z M7 5H5v16h14V5h-2 M8.5 11h7 M8.5 14.5h7 M8.5 18h4",data:"M4 20v-4L16 4l4 4L8 20z M13 7l4 4",exp:"M4 14v6h16v-6 M12 16V4 M8 8l4-4 4 4",ext:"M6 3h12v18H6z M9 6.5h6v3H9z M9 13.5h.01 M12 13.5h.01 M15 13.5h.01 M9 17.5h.01 M12 17.5h.01 M15 17.5h.01",log:"M12 3a9 9 0 100 18 9 9 0 000-18z M12 7v5.5l3.5 2"};
-$("#nv").innerHTML=[["dash","Dashboard Analitik"],["rekap","Rekapitulasi PDPB"],["data","Perubahan Data Pemilih"],["exp","Export Data"],["ext","Extract & Rekap CSV"],["log","Audit Log"]].map(([t,l])=>`<button data-t="${t}" title="${l}"><svg viewBox="0 0 24 24"><path d="${NVI[t]}"/></svg><span>${l}</span></button>`).join("");
-$("#nv").onclick=e=>{const b=e.target.closest("button");if(b&&b.dataset.t){S.tab=b.dataset.t;render();scrollTo(0,0)}};
+$("#nv").innerHTML='<button class="nvt" id="nvt" title="Perkecil / perbesar menu"><svg viewBox="0 0 24 24"><path d="M13 6l-6 6 6 6 M19 6l-6 6 6 6"/></svg></button>'+[["dash","Dashboard Analitik"],["rekap","Rekapitulasi PDPB"],["data","Perubahan Data Pemilih"],["exp","Export Data"],["ext","Extract & Rekap CSV"],["log","Audit Log"]].map(([t,l])=>`<button data-t="${t}" title="${l}"><svg viewBox="0 0 24 24"><path d="${NVI[t]}"/></svg><span>${l}</span></button>`).join("");
+try{if(localStorage.getItem("nvmini")=="1")$("#shell").classList.add("mini")}catch(e){}
+$("#nv").onclick=e=>{const b=e.target.closest("button");if(b&&b.id=="nvt"){const m=$("#shell").classList.toggle("mini");try{localStorage.setItem("nvmini",m?"1":"0")}catch(x){}return}if(b&&b.dataset.t){S.tab=b.dataset.t;render();scrollTo(0,0)}};
 $("#sy").onchange=e=>{S.y=+e.target.value;fillT();S.pg=0;S.dup=false;S.sel.clear();render()};$("#st").onchange=e=>{S.t=e.target.value;S.pg=0;S.dup=false;S.sel.clear();render()};
 const mn=$("#mn");let old="";
 mn.addEventListener("focusin",e=>{if(e.target.dataset.c!==undefined)old=e.target.textContent});
